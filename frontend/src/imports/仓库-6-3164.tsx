@@ -656,7 +656,6 @@ function Frame22() {
       <Frame15 />
       <Frame21 />
       <Frame23 />
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[254.64px] not-italic text-[7.829px] text-black top-[107.93px]">1 Happiness in 2026</p>
     </div>
   );
 }

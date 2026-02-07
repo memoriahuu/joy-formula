@@ -14,5 +14,15 @@ class ChatMessageRequest(BaseModel):
 
 class ChatMessageResponse(BaseModel):
     assistant_reply: str
+    has_card_draft: bool
     is_complete: bool
+    card_data: Optional[Dict] = None
+
+
+class ChatCompleteRequest(BaseModel):
+    session_id: str
+
+
+class ChatCompleteResponse(BaseModel):
+    message: str
     card_data: Optional[Dict] = None

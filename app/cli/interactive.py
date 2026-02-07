@@ -58,11 +58,12 @@ class JoyFormulaCLI:
             console.print("1. 📝 创建快乐卡片（和Joy Coach聊天）")
             console.print("2. 📚 查看我的快乐卡片")
             console.print("3. 💡 生成快乐定律")
-            console.print("4. 🎁 快乐盲盒推荐")
-            console.print("5. 🔄 切换AI提供商")
+            console.print("4. 🔍 查看快乐定律")
+            console.print("5. 🎁 快乐盲盒推荐")
+            console.print("6. 🔄 切换AI提供商")
             console.print("0. 退出")
 
-            choice = Prompt.ask("\n请选择", choices=["0", "1", "2", "3", "4", "5"])
+            choice = Prompt.ask("\n请选择", choices=["0", "1", "2", "3", "4", "5", "6"])
 
             if choice == "0":
                 console.print("[yellow]再见！希望你每天都快乐 😊[/yellow]")
@@ -74,8 +75,10 @@ class JoyFormulaCLI:
             elif choice == "3":
                 self.generate_insights()
             elif choice == "4":
-                self.explore_joy()
+                self.view_insights()
             elif choice == "5":
+                self.explore_joy()
+            elif choice == "6":
                 self.switch_ai_provider()
 
     def create_joy_card(self):
@@ -99,13 +102,43 @@ class JoyFormulaCLI:
         console.print(f"[bold green]Joy Coach:[/bold green] {initial['initial_message']}\n")
 
         # 对话循环
+        draft_card = None
+
         while session.status == SessionStatus.ACTIVE:
             user_input = Prompt.ask("[bold blue]你[/bold blue]")
 
             if user_input.lower() in ['退出', 'quit', 'exit']:
-                session.status = SessionStatus.ABANDONED
+                if draft_card:
+                    session.status = SessionStatus.ABANDONED
+                else:
+                    session.status = SessionStatus.ABANDONED
                 self.db.commit()
                 console.print("[yellow]对话已结束[/yellow]")
+                break
+
+            if user_input.lower() in ['完成', 'done']:
+                if draft_card:
+                    # 最终更新 raw_input 和 conversation_history
+                    draft_card.raw_input = "\n".join(
+                        msg["content"] for msg in session.messages if msg["role"] == "user"
+                    )
+                    draft_card.conversation_history = session.messages
+                    session.status = SessionStatus.COMPLETED
+                    self.db.commit()
+                    console.print("\n" + "="*50)
+                    console.print(Panel(
+                        f"[bold]{draft_card.card_summary}[/bold]\n\n"
+                        f"🎬 场景: {draft_card.formula_scene}\n"
+                        f"👥 人物: {draft_card.formula_people}\n"
+                        f"📌 事情: {draft_card.formula_event}\n"
+                        f"✨ 诱因: {draft_card.formula_trigger}\n"
+                        f"💫 感受: {draft_card.formula_sensation}",
+                        title="[bold green]✓ 快乐卡片已保存[/bold green]",
+                        border_style="green"
+                    ))
+                else:
+                    console.print("[yellow]还没有生成卡片，继续聊聊吧！[/yellow]")
+                    continue
                 break
 
             # 处理消息
@@ -117,38 +150,51 @@ class JoyFormulaCLI:
             # 显示回复
             console.print(f"\n[bold green]Joy Coach:[/bold green] {result['assistant_reply']}\n")
 
-            # 如果完成
+            # 如果检测到公式，创建/更新草稿卡片
             if result["is_complete"]:
                 formula = result["formula"]["formula"]
-                card = JoyCard(
-                    user_id=self.user.id,
-                    raw_input=user_input,
-                    formula_scene=formula.get("scene"),
-                    formula_people=formula.get("people"),
-                    formula_event=formula.get("event"),
-                    formula_trigger=formula.get("trigger"),
-                    formula_sensation=formula.get("sensation"),
-                    card_summary=result["formula"]["card_summary"],
-                    conversation_history=session.messages
+                all_user_inputs = "\n".join(
+                    msg["content"] for msg in session.messages if msg["role"] == "user"
                 )
-                self.db.add(card)
-                session.status = SessionStatus.COMPLETED
-                session.joy_card_id = card.id
+
+                if draft_card is None:
+                    draft_card = JoyCard(
+                        user_id=self.user.id,
+                        raw_input=all_user_inputs,
+                        formula_scene=formula.get("scene"),
+                        formula_people=formula.get("people"),
+                        formula_event=formula.get("event"),
+                        formula_trigger=formula.get("trigger"),
+                        formula_sensation=formula.get("sensation"),
+                        card_summary=result["formula"]["card_summary"],
+                        conversation_history=session.messages
+                    )
+                    self.db.add(draft_card)
+                    session.joy_card_id = draft_card.id
+                else:
+                    draft_card.raw_input = all_user_inputs
+                    draft_card.formula_scene = formula.get("scene")
+                    draft_card.formula_people = formula.get("people")
+                    draft_card.formula_event = formula.get("event")
+                    draft_card.formula_trigger = formula.get("trigger")
+                    draft_card.formula_sensation = formula.get("sensation")
+                    draft_card.card_summary = result["formula"]["card_summary"]
+                    draft_card.conversation_history = session.messages
+
                 self.db.commit()
 
-                # 显示卡片
-                console.print("\n" + "="*50)
+                # 显示草稿卡片
                 console.print(Panel(
-                    f"[bold]{card.card_summary}[/bold]\n\n"
-                    f"🎬 场景: {card.formula_scene}\n"
-                    f"👥 人物: {card.formula_people}\n"
-                    f"📌 事情: {card.formula_event}\n"
-                    f"✨ 诱因: {card.formula_trigger}\n"
-                    f"💫 感受: {card.formula_sensation}",
-                    title="[bold green]✓ 快乐卡片生成成功[/bold green]",
-                    border_style="green"
+                    f"[bold]{draft_card.card_summary}[/bold]\n\n"
+                    f"🎬 场景: {draft_card.formula_scene}\n"
+                    f"👥 人物: {draft_card.formula_people}\n"
+                    f"📌 事情: {draft_card.formula_event}\n"
+                    f"✨ 诱因: {draft_card.formula_trigger}\n"
+                    f"💫 感受: {draft_card.formula_sensation}",
+                    title="[bold yellow]📋 快乐卡片草稿[/bold yellow]",
+                    border_style="yellow"
                 ))
-                break
+                console.print("[dim]你可以继续补充细节，或输入'完成'保存卡片[/dim]\n")
             else:
                 self.db.commit()
 
@@ -238,6 +284,84 @@ class JoyFormulaCLI:
             console.print(f"[red]生成失败: {str(e)}[/red]")
 
         Prompt.ask("\n按回车返回主菜单")
+
+    def view_insights(self):
+        """查看快乐定律"""
+        insights = self.db.query(JoyInsight).filter(
+            JoyInsight.user_id == self.user.id
+        ).order_by(JoyInsight.created_at.desc()).all()
+
+        if not insights:
+            console.print("[yellow]你还没有快乐定律，先积累5张卡片再去生成吧！[/yellow]")
+            return
+
+        console.print(f"\n[bold]你有 {len(insights)} 条快乐定律[/bold]\n")
+
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("#", width=3)
+        table.add_column("定律", width=40)
+        table.add_column("模式类型", width=12)
+        table.add_column("状态", width=8)
+        table.add_column("生成时间", width=16)
+
+        for idx, insight in enumerate(insights, 1):
+            status = ""
+            if insight.is_confirmed:
+                status = "✓ 已确认"
+            elif insight.is_rejected:
+                status = "✗ 已否决"
+
+            text = insight.insight_text
+            if len(text) > 37:
+                text = text[:37] + "..."
+
+            table.add_row(
+                str(idx),
+                text,
+                insight.pattern_type or "未分类",
+                status,
+                insight.created_at.strftime("%Y-%m-%d %H:%M")
+            )
+
+        console.print(table)
+
+        # 查看详情
+        detail = Prompt.ask("\n输入编号查看详情（回车返回）", default="")
+        if detail.isdigit() and 1 <= int(detail) <= len(insights):
+            insight = insights[int(detail) - 1]
+
+            status = ""
+            if insight.is_confirmed:
+                status = "\n[green]✓ 已确认[/green]"
+            elif insight.is_rejected:
+                status = "\n[red]✗ 已否决[/red]"
+
+            # 构建证据卡片信息
+            evidence_text = ""
+            if insight.evidence_cards:
+                evidence_text = "\n\n[bold]关联的快乐卡片:[/bold]"
+                for ev in insight.evidence_cards:
+                    card_id = ev.get("card_id", "")
+                    quote = ev.get("quote", "")
+                    # 尝试查找卡片摘要
+                    card = self.db.query(JoyCard).filter(JoyCard.id == card_id).first()
+                    if card:
+                        evidence_text += f"\n  • {card.card_summary}"
+                        if quote:
+                            evidence_text += f"\n    [dim]\"{quote}\"[/dim]"
+                    elif quote:
+                        evidence_text += f"\n  • [dim]\"{quote}\"[/dim]"
+
+            console.print(Panel(
+                f"[bold]{insight.insight_text}[/bold]\n\n"
+                f"[dim]模式类型: {insight.pattern_type or '未分类'}[/dim]\n"
+                f"[dim]生成时间: {insight.created_at.strftime('%Y-%m-%d %H:%M')}[/dim]"
+                f"{status}"
+                f"{evidence_text}",
+                title=f"[bold cyan]定律 #{detail}[/bold cyan]",
+                border_style="cyan"
+            ))
+            Prompt.ask("\n按回车继续")
 
     def explore_joy(self):
         """快乐盲盒"""

@@ -43,9 +43,9 @@ export interface JoyCardData {
 }
 
 export interface ChatMessageResponse {
-  ai_response: string;
+  assistant_reply: string;
   is_complete: boolean;
-  card?: JoyCardData;
+  card_data?: JoyCardData;
 }
 
 // Joy Card Types

@@ -55,7 +55,7 @@ function Frame5() {
 function Frame2() {
   return (
     <div className="absolute bg-[#eee] h-[112.519px] left-0 overflow-clip top-0 w-[393px]">
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[158.18px] not-italic text-[12.23px] text-black top-[88.87px]">Joy Somebody</p>
+      <p className="absolute font-['Itim',sans-serif] leading-[normal] left-[158.18px] not-italic text-[12.23px] text-black top-[88.87px]">Joy Somebody</p>
       <Frame5 />
     </div>
   );
@@ -314,19 +314,21 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
 
     try {
       const response = await chatApi.sendMessage(sessionId, text);
+      console.log('API Response:', response);
       
       const aiMessage: Message = {
         type: 'ai',
-        text: response.ai_response,
+        text: response.assistant_reply,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        card: response.card
+        card: response.card_data
       };
       
+      console.log('AI Message:', aiMessage);
       setMessages(prev => [...prev, aiMessage]);
 
       // 如果对话完成并生成了卡片，显示提示
-      if (response.is_complete && response.card) {
-        console.log('Joy card generated:', response.card);
+      if (response.is_complete && response.card_data) {
+        console.log('Joy card generated:', response.card_data);
         // 可以在这里添加通知或跳转到卡片详情页
       }
     } catch (error) {
@@ -361,53 +363,27 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
               className="mb-6"
             >
               {message.type === 'ai' ? (
-                // AI Message - positioned like Frame11
-                <div className="relative" style={{ marginLeft: '30.17px', width: '314.726px' }}>
-                  <div className="relative">
-                    <div className="flex items-center justify-center">
-                      <div className="-scale-y-100 flex-none rotate-180 w-full">
-                        <div className="min-h-[133.627px] relative w-full">
-                          <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 301.539 133.627">
-                            <path d={svgPaths.p3e013380} fill="var(--fill-0, #EFEFEF)" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                    {index === 0 && (
-                      <div className="absolute flex h-[19.137px] items-center justify-center left-0 bottom-[-5px] w-[25.912px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "20" } as React.CSSProperties}>
-                        <div className="-scale-y-100 flex-none rotate-[-167.86deg]">
-                          <div className="h-[14.546px] relative w-[23.376px]">
-                            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3755 14.546">
-                              <path d={svgPaths.p1156fd80} fill="var(--fill-0, #EFEFEF)" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                // AI Message
+                <div className="flex flex-col items-start ml-[30px] max-w-[315px]">
+                  <div className="bg-[#EFEFEF] rounded-[16px] px-[20px] py-[16px] relative">
+                    <p className="font-['Istok_Web:Regular',sans-serif] leading-[1.4] text-[13px] text-black whitespace-pre-wrap break-words">
+                      {message.text}
+                    </p>
                   </div>
-                  <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[13.187px] text-black top-[22.97px] left-[13.19px] right-[13.19px] whitespace-pre-wrap">
-                    {message.text}
-                  </p>
-                  <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[#a1a1a1] text-[8.791px] mt-2">
+                  <p className="font-['Istok_Web:Regular',sans-serif] text-[9px] text-[#a1a1a1] mt-1 ml-2">
                     {message.time}
                   </p>
                 </div>
               ) : (
-                // User Message - positioned like Frame6
-                <div className="relative" style={{ marginLeft: '83.17px', width: '281.297px' }}>
-                  <div className="relative">
-                    <div className="flex items-center justify-center">
-                      <div className="-scale-y-100 flex-none rotate-180 w-full">
-                        <div className="min-h-[110.814px] relative w-full">
-                          <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 287.819 116.595">
-                            <path d={svgPaths.p5eeaa00} fill="var(--fill-0, #FEB05D)" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
+                // User Message
+                <div className="flex flex-col items-end mr-[30px] max-w-[280px] ml-auto">
+                  <div className="bg-[#FEB05D] rounded-[16px] px-[20px] py-[16px]">
+                    <p className="font-['Istok_Web:Regular',sans-serif] leading-[1.4] text-[13px] text-black whitespace-pre-wrap break-words">
+                      {message.text}
+                    </p>
                   </div>
-                  <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[12.786px] text-black top-[23.65px] left-[20px] right-[20px] whitespace-pre-wrap">
-                    {message.text}
+                  <p className="font-['Istok_Web:Regular',sans-serif] text-[9px] text-[#a1a1a1] mt-1 mr-2">
+                    {message.time}
                   </p>
                 </div>
               )}

@@ -16,7 +16,7 @@ function Frame9() {
       </div>
       <div className="absolute flex h-[117.992px] items-center justify-center left-[42.34px] top-[71.85px] w-[210.887px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
         <div className="flex-none rotate-[11.48deg]">
-          <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">{`"A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."`}</p>
+          <p className="font-['Itim',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">{`"A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."`}</p>
         </div>
       </div>
       <div className="absolute flex h-[32.965px] items-center justify-center left-[58.62px] top-[43.94px] w-[79.042px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
@@ -31,7 +31,7 @@ function Frame9() {
 function Frame2() {
   return (
     <div className="h-[39.079px] relative w-[183.454px]">
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
+      <p className="absolute font-['Itim',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
       <div className="absolute h-[2.714px] left-[22.99px] top-[17.47px] w-0">
         <div className="absolute inset-[-30%_-0.81px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 1.62829 4.34211">
@@ -115,7 +115,7 @@ function Frame8() {
 function Frame3() {
   return (
     <div className="h-[39.079px] relative w-[183.454px]">
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
+      <p className="absolute font-['Itim',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
       <div className="absolute h-[2.714px] left-[22.99px] top-[17.47px] w-0">
         <div className="absolute inset-[-30%_-0.81px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 1.62829 4.34211">
@@ -199,7 +199,7 @@ function Frame12() {
 function Frame4() {
   return (
     <div className="h-[39.079px] relative w-[183.454px]">
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
+      <p className="absolute font-['Itim',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
       <div className="absolute h-[2.714px] left-[22.99px] top-[17.47px] w-0">
         <div className="absolute inset-[-30%_-0.81px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 1.62829 4.34211">
@@ -283,7 +283,7 @@ function Frame11() {
 function Frame5() {
   return (
     <div className="h-[39.079px] relative w-[183.454px]">
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
+      <p className="absolute font-['Itim',sans-serif] leading-[normal] left-[2.3px] not-italic text-[#2b2a2a] text-[27.138px] top-[3.22px]">JOYTHEOREM</p>
       <div className="absolute h-[2.714px] left-[22.99px] top-[17.47px] w-0">
         <div className="absolute inset-[-30%_-0.81px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 1.62829 4.34211">
@@ -484,7 +484,7 @@ function Frame6() {
         </div>
       </div>
       <Frame />
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-0 not-italic text-[40.768px] text-black top-0">JOYREPO</p>
+      <p className="absolute font-['Itim',sans-serif] leading-[normal] left-0 not-italic text-[40.768px] text-black top-0">JOYREPO</p>
     </div>
   );
 }

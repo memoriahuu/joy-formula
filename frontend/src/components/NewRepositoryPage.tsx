@@ -81,25 +81,25 @@ interface BottomNavProps {
 
 function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: BottomNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-[84px] flex items-center justify-around px-8 z-50">
+    <div className="absolute bottom-0 left-0 right-0 bg-white h-[60px] flex items-center justify-around px-8 z-50">
       <button onClick={onNavigateChat} className="p-2 transition-transform hover:scale-110 active:scale-95">
-        <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <MessageCircle className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
       </button>
       <button onClick={onNavigateTheorem} className="p-2 transition-transform hover:scale-110 active:scale-95">
-        <FileText className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <FileText className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
       </button>
       <button onClick={onNavigateHome} className="p-2 transition-transform hover:scale-110 active:scale-95">
-        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <Smile className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
       </button>
       <button className="p-2 transition-transform hover:scale-110 active:scale-95">
-        <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <BarChart3 className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
       </button>
       <button className="p-2 transition-transform hover:scale-110 active:scale-95">
-        <Settings className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <Settings className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
       </button>
       
       {/* Home Indicator */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[140px] h-[5px] bg-black rounded-full" />
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[120px] h-[4px] bg-black rounded-full" />
     </div>
   );
 }
@@ -107,7 +107,7 @@ function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: Bottom
 // Scroll indicator on the right
 function ScrollIndicator() {
   return (
-    <div className="fixed right-1 top-1/2 -translate-y-1/2 w-[6px] h-[80px] bg-gray-300 rounded-full z-40">
+    <div className="absolute right-1 top-1/2 -translate-y-1/2 w-[6px] h-[80px] bg-gray-300 rounded-full z-40">
       <div className="w-full h-[30px] bg-gray-500 rounded-full" />
     </div>
   );
@@ -181,7 +181,7 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
         </div>
 
         {/* Content Area - Scrollable */}
-        <div className="absolute top-[310px] left-0 right-0 bottom-[84px] overflow-y-auto">
+        <div className="absolute top-[310px] left-0 right-0 bottom-[60px] overflow-y-auto">
           {/* Formula Tab Content */}
           {activeTab === 'formula' && (
             <div className="pt-4 pb-6">

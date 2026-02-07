@@ -41,7 +41,7 @@ function Frame1() {
 function Joyblindbox() {
   return (
     <div className="absolute h-[40.768px] left-[61.15px] top-[39.14px] w-[269.882px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[134.94px] not-italic text-[#2b2a2a] text-[40.768px] text-center top-0 w-[269.882px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <p className="-translate-x-1/2 absolute font-['Itim',sans-serif] leading-none left-[134.94px] not-italic text-[#2b2a2a] text-[40.768px] text-center top-0 w-[269.882px] whitespace-pre-wrap">JOYBLINDBOX</p>
       <Frame />
       <Frame1 />
     </div>

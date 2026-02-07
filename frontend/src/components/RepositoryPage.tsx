@@ -6,8 +6,8 @@ import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f
 
 function Component2() {
   return (
-    <div className="absolute bottom-[-0.1px] h-[35.78px] left-0 right-[0.27%]" data-name="4底部横条">
-      <div className="-translate-x-1/2 absolute bg-black bottom-[8.2px] h-[5.262px] left-[calc(50%-0.32px)] rounded-[105.235px] w-[141.015px]" data-name="Home Indicator" />
+    <div className="absolute bottom-[-0.1px] h-[20px] left-0 right-[0.27%]" data-name="4底部横条">
+      <div className="-translate-x-1/2 absolute bg-black bottom-[2px] h-[4px] left-[calc(50%-0.32px)] rounded-full w-[120px]" data-name="Home Indicator" />
     </div>
   );
 }
@@ -83,7 +83,7 @@ function Frame1({ onNavigateTheorem, onNavigateCard, onNavigateHome }: { onNavig
 
 function Component1({ onNavigateTheorem, onNavigateCard, onNavigateHome }: { onNavigateTheorem: () => void; onNavigateCard: () => void; onNavigateHome: () => void }) {
   return (
-    <div className="absolute bg-[rgba(255,255,255,0)] h-[84.797px] left-[-1.63px] top-[766.43px] w-[394.631px]" data-name="标签栏">
+    <div className="absolute bg-[rgba(255,255,255,0)] h-[60px] left-[-1.63px] top-[790px] w-[394.631px]" data-name="标签栏">
       <Component2 />
       <Frame1 onNavigateTheorem={onNavigateTheorem} onNavigateCard={onNavigateCard} onNavigateHome={onNavigateHome} />
     </div>

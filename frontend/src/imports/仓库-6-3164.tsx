@@ -1,3 +1,4 @@
+import React from 'react';
 import svgPaths from "./svg-cfdb63fkq1";
 import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
 import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
@@ -655,7 +656,6 @@ function Frame22() {
       <Frame15 />
       <Frame21 />
       <Frame23 />
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[254.64px] not-italic text-[7.829px] text-black top-[107.93px]">1 Happiness in 2026</p>
     </div>
   );
 }

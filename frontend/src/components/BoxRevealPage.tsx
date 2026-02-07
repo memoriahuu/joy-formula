@@ -41,7 +41,7 @@ function Frame1() {
 function Frame3() {
   return (
     <div className="absolute h-[40.768px] left-[61.15px] top-[39.14px] w-[269.882px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[134.94px] not-italic text-[#2b2a2a] text-[40.768px] text-center top-0 w-[269.882px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <p className="-translate-x-1/2 absolute font-['Itim',sans-serif] leading-none left-[134.94px] not-italic text-[#2b2a2a] text-[40.768px] text-center top-0 w-[269.882px] whitespace-pre-wrap">JOYBLINDBOX</p>
       <Frame />
       <Frame1 />
     </div>
@@ -51,7 +51,7 @@ function Frame3() {
 function Frame4() {
   return (
     <div className="h-[11.055px] relative w-[73.185px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[36.59px] not-italic text-[#a28f7e] text-[11.055px] text-center top-0 w-[73.185px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <p className="-translate-x-1/2 absolute font-['Itim',sans-serif] leading-none left-[36.59px] not-italic text-[#a28f7e] text-[11.055px] text-center top-0 w-[73.185px] whitespace-pre-wrap">JOYBLINDBOX</p>
       <div className="absolute h-[1.198px] left-[8.84px] top-[4.42px] w-0">
         <div className="absolute inset-[-30%_-0.36px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 0.718586 1.91623">

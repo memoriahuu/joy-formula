@@ -1,3 +1,4 @@
+import React from 'react';
 import svgPaths from "./svg-s5bgivpkb6";
 
 function Frame() {

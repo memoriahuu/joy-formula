@@ -1,7 +1,7 @@
 """全局语言状态"""
 
 # 支持: "zh", "en"
-current_language: str = "zh"
+current_language: str = "en"
 
 
 def set_language(lang: str) -> None:

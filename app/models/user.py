@@ -11,6 +11,7 @@ class User(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     user_identifier = Column(String, unique=True, nullable=False)  # 简化版ID
     display_name = Column(String, default="用户")
+    language = Column(String, default="en")  # "zh" | "en"
     created_at = Column(DateTime, default=datetime.utcnow)
     last_active = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

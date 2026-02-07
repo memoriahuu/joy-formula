@@ -1,5 +1,9 @@
 from typing import List, Dict, Optional
+import re
 from app.config import settings
+
+AUDIO_TRANSCRIPTION_TAG_OPEN = "[语音内容]"
+AUDIO_TRANSCRIPTION_TAG_CLOSE = "[/语音内容]"
 
 
 class AIService:
@@ -24,8 +28,8 @@ class AIService:
         elif self.provider == "gemini":
             import google.generativeai as genai
             genai.configure(api_key=settings.GEMINI_API_KEY)
-            self.client = genai.GenerativeModel('gemini-3-flash-preview')
-            self.model = "gemini-3-flash-preview"
+            self.client = genai.GenerativeModel('gemini-2.5-flash')
+            self.model = "gemini-2.5-flash"
 
         elif self.provider == "custom":
             # 用于 Defy 或其他自定义端点
@@ -97,6 +101,71 @@ class AIService:
         except Exception as e:
             print(f"AI API 调用失败: {str(e)}")
             raise
+
+    def chat_with_audio(self, system_prompt: str, messages: List[Dict[str, str]],
+                        audio_bytes: bytes, mime_type: str,
+                        temperature: float = 0.7) -> Dict[str, str]:
+        """
+        将音频和对话历史一次性发送给 Gemini，返回转录文本和 AI 回复
+
+        Args:
+            system_prompt: 系统提示词
+            messages: 消息历史
+            audio_bytes: 音频文件字节
+            mime_type: 音频 MIME 类型
+            temperature: 温度参数
+
+        Returns:
+            {"transcribed_text": "...", "assistant_reply": "..."}
+        """
+        if self.provider != "gemini":
+            raise ValueError("语音输入当前仅支持 Gemini 提供商")
+
+        try:
+            import google.generativeai as genai
+
+            # 构建 prompt：系统提示 + 对话历史 + 语音指令
+            full_prompt = f"{system_prompt}\n\n"
+            for msg in messages:
+                full_prompt += f"{msg['role']}: {msg['content']}\n"
+            full_prompt += (
+                "\n用户发送了一段语音消息（音频内容见下方）。"
+                f"请先将语音内容转写在 {AUDIO_TRANSCRIPTION_TAG_OPEN}...{AUDIO_TRANSCRIPTION_TAG_CLOSE} 标签内，"
+                "然后以 Joy Coach 身份正常回复。\n"
+            )
+
+            # 单次 API 调用：文本 prompt + 音频数据
+            response = self.client.generate_content(
+                [full_prompt, {"mime_type": mime_type, "data": audio_bytes}],
+                generation_config=genai.types.GenerationConfig(temperature=temperature)
+            )
+
+            return self._parse_audio_response(response.text)
+
+        except Exception as e:
+            print(f"语音 AI API 调用失败: {str(e)}")
+            raise
+
+    @staticmethod
+    def _parse_audio_response(text: str) -> Dict[str, str]:
+        """从 Gemini 回复中分离转录文本和 AI 回复"""
+        pattern = re.escape(AUDIO_TRANSCRIPTION_TAG_OPEN) + r"(.*?)" + re.escape(AUDIO_TRANSCRIPTION_TAG_CLOSE)
+        match = re.search(pattern, text, re.DOTALL)
+
+        if match:
+            transcribed_text = match.group(1).strip()
+            # 去掉转录标签部分，剩余的就是 AI 回复
+            assistant_reply = text[:match.start()] + text[match.end():]
+            assistant_reply = assistant_reply.strip()
+        else:
+            # 如果没有找到标签，整个回复作为 assistant_reply
+            transcribed_text = ""
+            assistant_reply = text.strip()
+
+        return {
+            "transcribed_text": transcribed_text,
+            "assistant_reply": assistant_reply
+        }
 
 
 # 全局 AI 服务实例

@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
-from app.schemas.user import UserResponse
+from app.schemas.user import UserResponse, UpdateLanguageRequest
+from app.i18n.state import set_language
 
 router = APIRouter(prefix="/api/auth", tags=["认证"])
 
@@ -20,6 +21,9 @@ def get_current_user(x_user_id: str = Header(...), db: Session = Depends(get_db)
         db.commit()
         db.refresh(user)
 
+    # 按用户偏好设置当前请求的语言
+    set_language(user.language or "en")
+
     return user
 
 
@@ -27,3 +31,19 @@ def get_current_user(x_user_id: str = Header(...), db: Session = Depends(get_db)
 def get_current_user_info(user: User = Depends(get_current_user)):
     """获取当前用户信息"""
     return user
+
+
+@router.put("/language")
+def update_language(
+    request: UpdateLanguageRequest,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """设置用户语言偏好"""
+    if request.language not in ("zh", "en"):
+        raise HTTPException(status_code=400, detail="Supported languages: zh, en")
+
+    user.language = request.language
+    db.commit()
+
+    return {"language": user.language}

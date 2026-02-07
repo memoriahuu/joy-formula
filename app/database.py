@@ -25,3 +25,13 @@ def init_db():
     """初始化数据库"""
     from app.models import user, joy_card, joy_insight, chat_session
     Base.metadata.create_all(bind=engine)
+
+    # SQLite: create_all 不会给已存在的表加新列，手动补齐
+    if "sqlite" in settings.DATABASE_URL:
+        from sqlalchemy import text, inspect
+        insp = inspect(engine)
+        columns = [c["name"] for c in insp.get_columns("users")]
+        if "language" not in columns:
+            with engine.connect() as conn:
+                conn.execute(text("ALTER TABLE users ADD COLUMN language VARCHAR DEFAULT 'en'"))
+                conn.commit()

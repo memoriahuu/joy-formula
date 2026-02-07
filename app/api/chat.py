@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
@@ -121,6 +121,118 @@ def send_message(
         "has_card_draft": has_card_draft or session.joy_card_id is not None,
         "is_complete": False,
         "card_data": card_data
+    }
+
+
+ALLOWED_AUDIO_TYPES = {
+    "audio/wav", "audio/x-wav", "audio/wave",
+    "audio/mp3", "audio/mpeg",
+    "audio/mp4", "audio/m4a", "audio/x-m4a",
+    "audio/webm",
+    "audio/ogg",
+}
+MAX_AUDIO_SIZE = 25 * 1024 * 1024  # 25MB
+
+
+@router.post("/voice-message", response_model=ChatMessageResponse)
+async def send_voice_message(
+    session_id: str = Form(...),
+    audio: UploadFile = File(...),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """发送语音消息（音频直接传给 Gemini，一次性获取转录+回复）"""
+    # 验证音频格式
+    content_type = audio.content_type or ""
+    if content_type not in ALLOWED_AUDIO_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"不支持的音频格式: {content_type}。支持: wav, mp3, m4a, webm, ogg"
+        )
+
+    # 读取音频并验证大小
+    audio_bytes = await audio.read()
+    if len(audio_bytes) > MAX_AUDIO_SIZE:
+        raise HTTPException(status_code=400, detail="音频文件过大，最大支持 25MB")
+
+    # 验证会话
+    session = db.query(ChatSession).filter(
+        ChatSession.id == session_id,
+        ChatSession.user_id == user.id
+    ).first()
+
+    if not session:
+        raise HTTPException(status_code=404, detail="会话不存在")
+
+    if session.status != SessionStatus.ACTIVE:
+        raise HTTPException(status_code=400, detail="会话已结束")
+
+    # 调用语音处理（单次 Gemini API 调用）
+    result = ChatService.process_voice_message(
+        session.messages, audio_bytes, content_type
+    )
+    session.messages = result["updated_history"]
+
+    # 复用与文本消息相同的卡片创建逻辑
+    card_data = None
+    has_card_draft = False
+    if result["is_complete"]:
+        formula = result["formula"]["formula"]
+        all_user_inputs = "\n".join(
+            msg["content"] for msg in session.messages if msg["role"] == "user"
+        )
+
+        existing_card = None
+        if session.joy_card_id:
+            existing_card = db.query(JoyCard).filter(JoyCard.id == session.joy_card_id).first()
+
+        if existing_card:
+            existing_card.raw_input = all_user_inputs
+            existing_card.formula_scene = formula.get("scene")
+            existing_card.formula_people = formula.get("people")
+            existing_card.formula_event = formula.get("event")
+            existing_card.formula_trigger = formula.get("trigger")
+            existing_card.formula_sensation = formula.get("sensation")
+            existing_card.card_summary = result["formula"]["card_summary"]
+            existing_card.conversation_history = session.messages
+            card = existing_card
+        else:
+            card = JoyCard(
+                user_id=user.id,
+                raw_input=all_user_inputs,
+                formula_scene=formula.get("scene"),
+                formula_people=formula.get("people"),
+                formula_event=formula.get("event"),
+                formula_trigger=formula.get("trigger"),
+                formula_sensation=formula.get("sensation"),
+                card_summary=result["formula"]["card_summary"],
+                conversation_history=session.messages
+            )
+            db.add(card)
+            db.flush()
+            session.joy_card_id = card.id
+
+        has_card_draft = True
+        card_data = {
+            "id": card.id,
+            "summary": card.card_summary,
+            "formula": {
+                "scene": card.formula_scene,
+                "people": card.formula_people,
+                "event": card.formula_event,
+                "trigger": card.formula_trigger,
+                "sensation": card.formula_sensation
+            }
+        }
+
+    db.commit()
+
+    return {
+        "assistant_reply": result["assistant_reply"],
+        "has_card_draft": has_card_draft or session.joy_card_id is not None,
+        "is_complete": False,
+        "card_data": card_data,
+        "transcribed_text": result["transcribed_text"]
     }
 
 

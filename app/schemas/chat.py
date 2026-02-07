@@ -17,6 +17,7 @@ class ChatMessageResponse(BaseModel):
     has_card_draft: bool
     is_complete: bool
     card_data: Optional[Dict] = None
+    transcribed_text: Optional[str] = None
 
 
 class ChatCompleteRequest(BaseModel):

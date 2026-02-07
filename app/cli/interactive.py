@@ -43,31 +43,46 @@ class JoyFormulaCLI:
 
     def start(self):
         """启动CLI"""
-        # 语言选择（双语显示，任何用户都能选）
-        console.print("\n[bold]1. 中文[/bold]")
-        console.print("[bold]2. English[/bold]")
-        lang_choice = Prompt.ask("选择语言 / Choose language", choices=["1", "2"], default="1")
-        set_language("zh" if lang_choice == "1" else "en")
-
-        console.print(Panel.fit(
-            t("welcome_title"),
-            border_style="cyan"
-        ))
-
-        # 获取或创建用户
-        user_id = Prompt.ask(t("prompt_user_id"), default="demo_user")
+        # 先输入用户ID，再决定语言
+        console.print("\n[dim]JoyFormula[/dim]")
+        user_id = Prompt.ask("\n请输入用户ID / Enter user ID", default="demo_user")
         self.user = self.db.query(User).filter(User.user_identifier == user_id).first()
 
-        if not self.user:
-            self.user = User(
-                user_identifier=user_id,
-                display_name=t("default_display_name", user_id=user_id)
-            )
-            self.db.add(self.user)
-            self.db.commit()
-            console.print(t("user_created", user_id=user_id))
-        else:
+        if self.user and self.user.language:
+            # 老用户：使用已存的语言偏好
+            set_language(self.user.language)
+            console.print(Panel.fit(
+                t("welcome_title"),
+                border_style="cyan"
+            ))
             console.print(t("user_welcome_back", display_name=self.user.display_name))
+        else:
+            # 新用户或无语言记录：让用户选择
+            console.print("\n[bold]1. 中文[/bold]")
+            console.print("[bold]2. English[/bold]")
+            lang_choice = Prompt.ask("选择语言 / Choose language", choices=["1", "2"], default="2")
+            lang = "zh" if lang_choice == "1" else "en"
+            set_language(lang)
+
+            console.print(Panel.fit(
+                t("welcome_title"),
+                border_style="cyan"
+            ))
+
+            if not self.user:
+                self.user = User(
+                    user_identifier=user_id,
+                    display_name=t("default_display_name", user_id=user_id),
+                    language=lang
+                )
+                self.db.add(self.user)
+                self.db.commit()
+                console.print(t("user_created", user_id=user_id))
+            else:
+                # 老用户但没存过语言
+                self.user.language = lang
+                self.db.commit()
+                console.print(t("user_welcome_back", display_name=self.user.display_name))
 
         self.main_menu()
 
@@ -157,8 +172,15 @@ class JoyFormulaCLI:
                     continue
                 break
 
-            # 处理消息
-            result = ChatService.process_message(session.messages, user_input)
+            # 语音输入处理
+            if user_input.startswith("/voice"):
+                voice_result = self._handle_voice_input(user_input, session)
+                if voice_result is None:
+                    continue
+                result = voice_result
+            else:
+                # 处理文本消息
+                result = ChatService.process_message(session.messages, user_input)
 
             # 更新会话
             session.messages = result["updated_history"]
@@ -210,6 +232,57 @@ class JoyFormulaCLI:
                 self.db.commit()
 
         Prompt.ask(t("press_enter_return"))
+
+    def _handle_voice_input(self, user_input: str, session):
+        """处理 /voice 命令，返回处理结果或 None（失败时）"""
+        from app.config import settings
+
+        # 检查是否为 Gemini
+        if settings.AI_PROVIDER != "gemini":
+            console.print(t("voice_requires_gemini"))
+            return None
+
+        parts = user_input.split(maxsplit=1)
+        if len(parts) < 2 or not parts[1].strip():
+            console.print(t("voice_usage_hint"))
+            return None
+
+        file_path = os.path.expanduser(parts[1].strip())
+        if not os.path.isabs(file_path):
+            file_path = os.path.abspath(file_path)
+
+        if not os.path.exists(file_path):
+            console.print(t("voice_file_not_found", path=file_path))
+            return None
+
+        # 检查格式
+        ext_to_mime = {
+            ".wav": "audio/wav",
+            ".mp3": "audio/mpeg",
+            ".m4a": "audio/mp4",
+            ".webm": "audio/webm",
+            ".ogg": "audio/ogg",
+        }
+        ext = os.path.splitext(file_path)[1].lower()
+        mime_type = ext_to_mime.get(ext)
+        if not mime_type:
+            console.print(t("voice_unsupported_format", ext=ext))
+            return None
+
+        # 读取文件并处理
+        console.print(t("voice_processing"))
+        with open(file_path, "rb") as f:
+            audio_bytes = f.read()
+
+        result = ChatService.process_voice_message(
+            session.messages, audio_bytes, mime_type
+        )
+
+        # 显示转录结果
+        if result.get("transcribed_text"):
+            console.print(t("voice_transcribed", text=result["transcribed_text"]))
+
+        return result
 
     def view_cards(self):
         """查看卡片"""
@@ -445,7 +518,10 @@ class JoyFormulaCLI:
         console.print("\n[bold]1. 中文[/bold]")
         console.print("[bold]2. English[/bold]")
         lang_choice = Prompt.ask(t("language_prompt"), choices=["1", "2"])
-        set_language("zh" if lang_choice == "1" else "en")
+        lang = "zh" if lang_choice == "1" else "en"
+        set_language(lang)
+        self.user.language = lang
+        self.db.commit()
         console.print(t("language_switched"))
 
 

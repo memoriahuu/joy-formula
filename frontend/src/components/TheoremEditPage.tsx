@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-yq6vd11jyo";
 
@@ -264,8 +265,13 @@ export default function TheoremEditPage({ onNavigateChat, onNavigateHome, onNavi
         </svg>
       </div>
       <Frame8 onSubmit={onSubmit} />
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[175.3px] not-italic text-[12.23px] text-black top-[53.81px]">Insights</p>
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[94.58px] not-italic text-[10.451px] text-black top-[216.07px] w-[273.958px] whitespace-pre-wrap">
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[175.3px] not-italic text-[12.23px] text-black top-[53.81px]">
+        Insights
+      </p>
+      <motion.p 
+        animate={{ x: [-4, 4, -4] }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[94.58px] not-italic text-[10.451px] text-black top-[216.07px] w-[273.958px] whitespace-pre-wrap">
         <span className="leading-[normal]">{`"I was at a `}</span>
         <span className="font-['Istok_Web:Bold',sans-serif] leading-[normal]">cafe</span>
         <span className="leading-[normal]">{` this afternoon and the sunlight was streaming through the window onto my book. It was so `}</span>
@@ -273,30 +279,60 @@ export default function TheoremEditPage({ onNavigateChat, onNavigateHome, onNavi
         <span className="leading-[normal]">{`—I felt incredibly `}</span>
         <span className="font-['Istok_Web:Bold',sans-serif] leading-[normal]">relaxed and happy</span>
         <span className="leading-[normal]">{`."`}</span>
-      </p>
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[42.4px] not-italic text-[10.451px] text-black top-[123.12px] w-[261.728px] whitespace-pre-wrap">
+      </motion.p>
+      <motion.p 
+        animate={{ x: [-3, 3, -3] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+        className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[42.4px] not-italic text-[10.451px] text-black top-[123.12px] w-[261.728px] whitespace-pre-wrap">
         <span className="leading-[normal]">{`"I cannot remember the time I went to the cafe but the taste of the coffee always reminds me about the `}</span>
         <span className="font-['Istok_Web:Bold',sans-serif] leading-[normal]">{`sunset, `}</span>
         <span className="leading-[normal]">{`the feeling of `}</span>
         <span className="font-['Istok_Web:Bold',sans-serif] leading-[normal]">memories</span>
         <span className="leading-[normal]">"</span>
-      </p>
+      </motion.p>
       <div className="absolute flex h-[2.446px] items-center justify-center left-[154.92px] top-[71.75px] w-[83.166px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
         <div className="flex-none rotate-90">
           <div className="bg-[#7d7d7d] h-[83.166px] rounded-[9.784px] w-[2.446px]" />
         </div>
       </div>
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[175.3px] not-italic text-[12.23px] text-black top-[697.94px]">Evidence</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[175.3px] not-italic text-[12.23px] text-black top-[697.94px]">
+        Evidence
+      </p>
       <div className="absolute flex h-[2.446px] items-center justify-center left-[154.92px] top-[692.23px] w-[83.166px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
         <div className="flex-none rotate-90">
           <div className="bg-[#7d7d7d] h-[83.166px] rounded-[9.784px] w-[2.446px]" />
         </div>
       </div>
-      <p className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[69.3px] text-[12.23px] text-black top-[580.53px]">"Memories"</p>
-      <p className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[272.33px] opacity-80 text-[12.23px] text-black top-[580.53px]">"Calm"</p>
-      <p className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[168.78px] text-[20.384px] text-black top-[598.47px]">"Light"</p>
-      <p className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[240.53px] text-[12.23px] text-black top-[643.31px]">"Quiet"</p>
-      <p className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[120.67px] opacity-50 text-[8.154px] text-black top-[631.9px]">"Sunset"</p>
+      <motion.p 
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[69.3px] text-[12.23px] text-black top-[580.53px]">
+        "Memories"
+      </motion.p>
+      <motion.p 
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 4.7, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+        className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[272.33px] opacity-80 text-[12.23px] text-black top-[580.53px]">
+        "Calm"
+      </motion.p>
+      <motion.p 
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+        className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[168.78px] text-[20.384px] text-black top-[598.47px]">
+        "Light"
+      </motion.p>
+      <motion.p 
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+        className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[240.53px] text-[12.23px] text-black top-[643.31px]">
+        "Quiet"
+      </motion.p>
+      <motion.p 
+        animate={{ opacity: [0.4, 1, 0.4] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+        className="absolute font-['Istok_Web:Italic',sans-serif] italic leading-[normal] left-[120.67px] opacity-50 text-[8.154px] text-black top-[631.9px]">
+        "Sunset"
+      </motion.p>
       <Frame2 />
       <Frame1 />
       <Component onNavigateChat={onNavigateChat} onNavigateHome={onNavigateHome} onNavigateRepository={onNavigateRepository} />

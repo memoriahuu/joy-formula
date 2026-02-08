@@ -86,15 +86,15 @@ function TheoremCardFrame() {
 function TheoremCardNotification() {
   return (
     <div className="absolute bg-[#f0817f] content-stretch flex flex-col items-center justify-center left-[54.63px] px-[4.892px] py-[1.631px] rounded-[6.93px] size-[13.861px] top-[1.63px]">
-      <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
+      <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
     </div>
   );
 }
 
-function TheoremCard({ onNavigateTheorem }: { onNavigateTheorem: () => void }) {
+function TheoremCard({ onNavigateTheoremEdit }: { onNavigateTheoremEdit: () => void }) {
   return (
     <motion.button
-      onClick={onNavigateTheorem}
+      onClick={onNavigateTheoremEdit}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.5 }}
@@ -164,7 +164,7 @@ function GiftBoxFrame() {
 function GiftBoxNotification() {
   return (
     <div className="absolute bg-[#f0817f] content-stretch flex flex-col items-center justify-center left-[68.29px] px-[4.892px] py-[1.631px] rounded-[6.93px] size-[13.861px] top-[12.95px]">
-      <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
+      <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
     </div>
   );
 }
@@ -284,7 +284,7 @@ function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string
           >
             {card.title}
           </p>
-          <p className="absolute font-['Itim:Regular',sans-serif] left-[20.38px] right-[20.38px] text-[#3a3a3a] text-[13px] leading-relaxed top-[50px]">
+          <p className="absolute font-['Istok_Web:Regular',sans-serif] left-[20.38px] right-[20.38px] text-[#3a3a3a] text-[13px] leading-relaxed top-[50px]">
             {card.content}
           </p>
         </>
@@ -293,7 +293,7 @@ function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string
           {/* Summary View */}
           <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[19.918px] left-[20.38px] text-[#f90] text-[29.508px] top-[24.46px] w-[13.279px]">"</p>
           <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[22.131px] left-[290.27px] text-[#f90] text-[29.508px] top-[75.83px] w-[18.443px]">"</p>
-          <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">
+          <p className="-translate-x-1/2 absolute font-['Istok_Web:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">
             {summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}
           </p>
         </>
@@ -320,7 +320,7 @@ function Frame17({ onNavigateChat }: { onNavigateChat: () => void }) {
           </div>
         </div>
       </div>
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[0] left-[20.38px] not-italic text-[#6a4206] text-[19.568px] top-[34.24px]">
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[20.38px] not-italic text-[#6a4206] text-[19.568px] top-[34.24px]">
         <span className="leading-[normal]">{`Start Your `}</span>
         <span className="leading-[normal] text-[#ed7300]">Happiness</span>
         <span className="leading-[normal]">{` Now!`}</span>
@@ -813,11 +813,12 @@ function Component1({ onNavigateChat, onNavigateTheorem, onNavigateRepository }:
 interface HomePageProps {
   onNavigateChat: () => void;
   onNavigateTheorem: () => void;
+  onNavigateTheoremEdit: () => void;
   onNavigateRepository: () => void;
   onNavigateGiftBox?: () => void;
 }
 
-export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigateRepository, onNavigateGiftBox }: HomePageProps) {
+export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigateTheoremEdit, onNavigateRepository, onNavigateGiftBox }: HomePageProps) {
   const [selectedCard, setSelectedCard] = useState<CardType>(null);
   const [latestCard, setLatestCard] = useState<JoyCard | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -861,7 +862,7 @@ export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigate
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[256.02px] not-italic text-[8.154px] text-black top-[163.89px] w-[107.627px] whitespace-pre-wrap">This is your 96th JoyFormula.</p>
       
       {/* Theorem Card and Gift Box */}
-      <TheoremCard onNavigateTheorem={onNavigateTheorem} />
+      <TheoremCard onNavigateTheoremEdit={onNavigateTheoremEdit} />
       <GiftBox onNavigateGiftBox={onNavigateGiftBox} />
       
       <Component1 onNavigateChat={onNavigateChat} onNavigateTheorem={onNavigateTheorem} onNavigateRepository={onNavigateRepository} />

@@ -16,7 +16,7 @@ function Frame9({ summary }: { summary?: string | null }) {
       </div>
       <div className="absolute flex h-[117.992px] items-center justify-center left-[42.34px] top-[71.85px] w-[210.887px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
         <div className="flex-none rotate-[11.48deg]">
-          <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">
+          <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">
             "{summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}"
           </p>
         </div>

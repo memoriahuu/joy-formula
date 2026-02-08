@@ -55,6 +55,7 @@ export default function App() {
             <HomePage
               onNavigateChat={() => setCurrentPage('chat')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
+              onNavigateTheoremEdit={() => setCurrentPage('theoremEdit')}
               onNavigateRepository={() => setCurrentPage('repository')}
               onNavigateGiftBox={() => setCurrentPage('energySelection')}
             />

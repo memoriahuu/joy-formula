@@ -263,7 +263,8 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
-  
+  const [activeCard, setActiveCard] = useState<JoyCardData | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -322,13 +323,13 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         card: response.card
       };
-      
+
       setMessages(prev => [...prev, aiMessage]);
 
-      // 如果对话完成并生成了卡片，显示提示
+      // 如果对话完成并生成了卡片，显示卡片模态框
       if (response.is_complete && response.card) {
         console.log('Joy card generated:', response.card);
-        // 可以在这里添加通知或跳转到卡片详情页
+        setActiveCard(response.card);
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -347,9 +348,9 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
   return (
     <div className="bg-white relative h-[852px] w-[393px]">
       <Frame2 />
-      
+
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[158.18px] not-italic text-[#a1a1a1] text-[12.23px] top-[137.79px]">Feb 6th, 2026</p>
-      
+
       {/* Messages Container */}
       <div className="absolute left-0 right-0 top-[160px] bottom-[150px] overflow-y-auto px-4">
         <AnimatePresence>
@@ -392,13 +393,6 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
                   <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[#a1a1a1] text-[8.791px] mt-2">
                     {message.time}
                   </p>
-
-                  {/* Show JoyCard if present */}
-                  {message.card && (
-                    <div className="mt-4">
-                      <JoyCard data={message.card} />
-                    </div>
-                  )}
                 </div>
               ) : (
                 // User Message - positioned like Frame6
@@ -427,6 +421,13 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
 
       <InputBar onSubmit={handleSubmit} />
       <Component1 onNavigateHome={onNavigateHome} onNavigateTheorem={onNavigateTheorem} onNavigateRepository={onNavigateRepository} />
+
+      {/* JoyCard Modal - rendered at root level for proper centering */}
+      <AnimatePresence>
+        {activeCard && (
+          <JoyCard data={activeCard} onClose={() => setActiveCard(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

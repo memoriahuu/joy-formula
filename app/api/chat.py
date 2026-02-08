@@ -53,10 +53,10 @@ def send_message(
     ).first()
 
     if not session:
-        raise HTTPException(status_code=404, detail="会话不存在")
+        raise HTTPException(status_code=404, detail="chat not existed")
 
     if session.status != SessionStatus.ACTIVE:
-        raise HTTPException(status_code=400, detail="会话已结束")
+        raise HTTPException(status_code=400, detail="chat ended")
 
     result = ChatService.process_message(session.messages, request.message)
     session.messages = result["updated_history"]

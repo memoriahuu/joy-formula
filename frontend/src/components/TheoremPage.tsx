@@ -3,10 +3,10 @@ import svgPaths from "../imports/svg-svkz6eqmyl";
 import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
 import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
 import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
-import { insightsApi } from '../api';
-import type { JoyInsight } from '../types';
+import { insightsApi, cardsApi } from '../api';
+import type { JoyInsight, JoyCard } from '../types';
 
-function Frame9() {
+function Frame9({ summary }: { summary?: string | null }) {
   return (
     <div className="absolute h-[251.21px] left-[47.5px] top-[299.53px] w-[297.695px]">
       <div className="absolute flex h-[251.21px] items-center justify-center left-0 top-0 w-[297.695px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
@@ -16,7 +16,9 @@ function Frame9() {
       </div>
       <div className="absolute flex h-[117.992px] items-center justify-center left-[42.34px] top-[71.85px] w-[210.887px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
         <div className="flex-none rotate-[11.48deg]">
-          <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">{`"A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."`}</p>
+          <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">
+            "{summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}"
+          </p>
         </div>
       </div>
       <div className="absolute flex h-[32.965px] items-center justify-center left-[58.62px] top-[43.94px] w-[79.042px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
@@ -497,8 +499,25 @@ interface TheoremPageProps {
 
 export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigateRepository }: TheoremPageProps) {
   const [insights, setInsights] = useState<JoyInsight[]>([]);
+  const [latestCard, setLatestCard] = useState<JoyCard | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // 获取最新的JoyCard
+  useEffect(() => {
+    const loadLatestCard = async () => {
+      try {
+        const response = await cardsApi.getCards(0, 1);
+        if (response.cards && response.cards.length > 0) {
+          setLatestCard(response.cards[0]);
+        }
+      } catch (error) {
+        console.error('Failed to load latest card:', error);
+      }
+    };
+
+    loadLatestCard();
+  }, []);
 
   // 获取定律列表
   useEffect(() => {
@@ -534,7 +553,7 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
 
   return (
     <div className="bg-white relative size-full" data-name="Thereom">
-      <Frame9 />
+      <Frame9 summary={latestCard?.card_summary} />
       <Frame8 />
       <div className="absolute flex h-[388.465px] items-center justify-center left-[138.5px] top-[64.53px] w-[386.334px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "959" } as React.CSSProperties}>
         <div className="flex-none rotate-[-48.45deg]">

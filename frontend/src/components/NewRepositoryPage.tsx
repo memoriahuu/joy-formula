@@ -5,6 +5,8 @@ import JoyrepoTitle from '../imports/Joyrepo';
 import { cardsApi } from '../api';
 import type { JoyCard } from '../types';
 
+//repopage, showing calendar and emotion cards, with nav bar at the bottom to switch between pages
+// Circular puzzle piece component
 // Circular puzzle piece component
 interface PuzzlePieceProps {
   color: string;
@@ -81,7 +83,7 @@ interface BottomNavProps {
 
 function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: BottomNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-[84px] flex items-center justify-around px-8 z-50">
+    <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-[84px] flex items-center justify-around px-8 z-50">
       <button onClick={onNavigateChat} className="p-2 transition-transform hover:scale-110 active:scale-95">
         <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
@@ -97,7 +99,7 @@ function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: Bottom
       <button className="p-2 transition-transform hover:scale-110 active:scale-95">
         <Settings className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      
+
       {/* Home Indicator */}
       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[140px] h-[5px] bg-black rounded-full" />
     </div>

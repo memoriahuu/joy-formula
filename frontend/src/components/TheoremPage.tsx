@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
+import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-svkz6eqmyl";
-import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
-import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
-import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
 import { insightsApi, cardsApi } from '../api';
 import type { JoyInsight, JoyCard } from '../types';
+
+//theorem page with card decks
 
 function Frame9({ summary }: { summary?: string | null }) {
   return (
@@ -374,64 +374,25 @@ function Component1() {
   );
 }
 
-function BarChart() {
-  return (
-    <div className="h-[27.394px] relative shrink-0 w-[29.677px]" data-name="Bar chart-2">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 29.6769 27.394">
-        <g id="Bar chart-2">
-          <path d={svgPaths.p1b098100} id="Icon" stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2243" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-function Settings() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px]" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3246 22.8284">
-        <g clipPath="url(#clip0_13_217)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths.p1daa5200} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-            <path d={svgPaths.p2aef6140} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_13_217">
-            <rect fill="white" height="22.8284" width="23.3246" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-function MessageSquare() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px]" data-name="MessageSquare">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="var(--stroke-0, #4B4B4B)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    </div>
-  );
-}
 
 function Frame7({ onNavigateChat, onNavigateHome, onNavigateRepository }: { onNavigateChat: () => void; onNavigateHome: () => void; onNavigateRepository: () => void }) {
   return (
     <div className="absolute content-stretch flex gap-[38.047px] items-end left-[54.63px] top-[14.68px]">
-      <button onClick={onNavigateChat} className="relative transition-transform hover:scale-110 active:scale-95">
-        <MessageSquare />
+      <button onClick={onNavigateChat} className="relative shrink-0 transition-transform hover:scale-110 active:scale-95">
+        <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button className="relative rounded-[3.044px] shrink-0 size-[27.394px] opacity-70" data-name="image 12">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[3.044px] size-full" src={imgImage12} />
+      <div className="relative shrink-0">
+        <FileText className="w-6 h-6 text-[#FEB05D]" strokeWidth={1.5} />
+      </div>
+      <button onClick={onNavigateHome} className="relative shrink-0 transition-transform hover:scale-110 active:scale-95">
+        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button onClick={onNavigateHome} className="relative shrink-0 size-[27.394px] transition-transform hover:scale-110 active:scale-95" data-name="happy_1949672 1">
-        <img alt="Navigate to home" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgHappy19496721} />
+      <button onClick={onNavigateRepository} className="relative shrink-0 transition-transform hover:scale-110 active:scale-95">
+        <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button onClick={onNavigateRepository} className="relative transition-transform hover:scale-110 active:scale-95">
-        <BarChart />
-      </button>
-      <Settings />
+      <div className="relative shrink-0">
+        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </div>
     </div>
   );
 }

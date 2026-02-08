@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-bb8qo2f75h";
 import svgPaths2 from "../imports/svg-qg7g61fb9c";
 import svgPathsTheorem from "../imports/svg-8blp8pu86r";
 import svgPathsGiftBox from "../imports/svg-bkazuxlag9";
-import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
-import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
-import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
 import imgImage9 from "figma:asset/f232edc536b9310bdca4bcd53c1aee8a1be5c1d1.png";
 import { cardsApi } from '../api';
 import type { JoyCard } from '../types';
@@ -232,7 +230,38 @@ function GiftBox({ onNavigateGiftBox }: { onNavigateGiftBox?: () => void }) {
   );
 }
 
-function Frame14({ summary }: { summary?: string | null }) {
+function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string | null; selectedCard: CardType; joyCard: JoyCard | null; onClose: () => void }) {
+  const cardConfigs: Record<Exclude<CardType, null>, { title: string; color: string; content: string }> = {
+    scene: {
+      title: 'Scene',
+      color: '#5a7acd',
+      content: joyCard?.formula_scene || 'Around 6 PM after work, by the window at a cafe near the office',
+    },
+    people: {
+      title: 'People',
+      color: '#f98080',
+      content: joyCard?.formula_people || 'Just me, enjoying my own company',
+    },
+    trigger: {
+      title: 'Trigger',
+      color: '#4190ae',
+      content: joyCard?.formula_trigger || 'The warm afternoon sunlight streaming through the window',
+    },
+    senses: {
+      title: 'Senses',
+      color: '#ec871b',
+      content: joyCard?.formula_sensation || 'Warm light on my skin, the smell of fresh coffee, soft background music',
+    },
+    feeling: {
+      title: 'Event',
+      color: '#8b679d',
+      content: joyCard?.formula_event || 'Reading a book while sipping coffee',
+    }
+  };
+
+  const isShowingCard = selectedCard !== null;
+  const card = selectedCard ? cardConfigs[selectedCard] : null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -240,11 +269,35 @@ function Frame14({ summary }: { summary?: string | null }) {
       transition={{ delay: 0.6, duration: 0.5 }}
       className="absolute bg-white h-[141.056px] leading-[normal] left-[35.88px] not-italic overflow-clip rounded-bl-[14.754px] rounded-br-[14.754px] shadow-[2.951px_2.951px_14.754px_1.475px_rgba(191,172,89,0.25)] top-[481.06px] w-[329.402px] whitespace-pre-wrap"
     >
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[19.918px] left-[20.38px] text-[#f90] text-[29.508px] top-[24.46px] w-[13.279px]">"</p>
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[22.131px] left-[290.27px] text-[#f90] text-[29.508px] top-[75.83px] w-[18.443px]">"</p>
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">
-        {summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}
-      </p>
+      {isShowingCard && card ? (
+        <>
+          {/* Card Detail View */}
+          <button
+            onClick={onClose}
+            className="absolute right-[15px] top-[15px] text-gray-400 hover:text-gray-600 text-[20px] font-bold z-10"
+          >
+            ×
+          </button>
+          <p
+            className="absolute font-['Istok_Web:Bold',sans-serif] left-[20.38px] text-[18px] top-[20px]"
+            style={{ color: card.color }}
+          >
+            {card.title}
+          </p>
+          <p className="absolute font-['Itim:Regular',sans-serif] left-[20.38px] right-[20.38px] text-[#3a3a3a] text-[13px] leading-relaxed top-[50px]">
+            {card.content}
+          </p>
+        </>
+      ) : (
+        <>
+          {/* Summary View */}
+          <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[19.918px] left-[20.38px] text-[#f90] text-[29.508px] top-[24.46px] w-[13.279px]">"</p>
+          <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[22.131px] left-[290.27px] text-[#f90] text-[29.508px] top-[75.83px] w-[18.443px]">"</p>
+          <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">
+            {summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}
+          </p>
+        </>
+      )}
     </motion.div>
   );
 }
@@ -716,45 +769,6 @@ function Component2() {
   );
 }
 
-function BarChart() {
-  return (
-    <div className="h-[27.394px] relative shrink-0 w-[29.677px] opacity-70" data-name="Bar chart-2">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M18 20V10M12 20V4M6 20V14" stroke="var(--stroke-0, #4B4B4B)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </div>
-  );
-}
-
-function Settings() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px] opacity-70" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3246 22.8284">
-        <g clipPath="url(#clip0_13_217)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths2.p1daa5200} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-            <path d={svgPaths2.p2aef6140} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_13_217">
-            <rect fill="white" height="22.8284" width="23.3246" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-function MessageSquare() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px] opacity-70" data-name="MessageSquare">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="var(--stroke-0, #4B4B4B)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    </div>
-  );
-}
 
 function Frame15({ onNavigateChat, onNavigateTheorem, onNavigateRepository }: { onNavigateChat: () => void; onNavigateTheorem: () => void; onNavigateRepository: () => void }) {
   return (
@@ -763,25 +777,26 @@ function Frame15({ onNavigateChat, onNavigateTheorem, onNavigateRepository }: { 
         onClick={onNavigateChat}
         className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <MessageSquare />
+        <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <button
         onClick={onNavigateTheorem}
-        className="relative rounded-[3.044px] shrink-0 size-[25.111px] transition-transform hover:scale-110 active:scale-95 opacity-70"
-        data-name="image 13"
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <img alt="Navigate to theorem" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[3.044px] size-full" src={imgImage13} />
+        <FileText className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button className="relative shrink-0 size-[27.394px]" data-name="happy_1949672 1">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgHappy19496721} />
+      <button className="relative shrink-0">
+        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <button
         onClick={onNavigateRepository}
         className="relative transition-transform hover:scale-110 active:scale-95"
       >
-        <BarChart />
+        <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <Settings />
+      <button className="relative shrink-0">
+        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </button>
     </div>
   );
 }

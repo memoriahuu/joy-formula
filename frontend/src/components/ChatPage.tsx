@@ -1,11 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mic, MicOff } from 'lucide-react';
+import { Mic, MicOff, MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-q9e9i9q3px";
 import imgImage5 from "figma:asset/5e23b583e6ceb3250bf5714b464a5fc90e5eba62.png";
-import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
-import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
-import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
 import { chatApi } from '../api';
 import type { JoyCardData } from '../types';
 import { JoyCard } from './JoyCard';
@@ -70,72 +67,34 @@ function Component2() {
   );
 }
 
-function BarChart({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="h-[27.394px] relative shrink-0 w-[29.677px] transition-transform hover:scale-110 active:scale-95"
-      data-name="Bar chart-2"
-    >
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 29.6769 27.394">
-        <g id="Bar chart-2">
-          <path d={svgPaths.p1b098100} id="Icon" stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2243" />
-        </g>
-      </svg>
-    </button>
-  );
-}
-
-function Settings() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px] opacity-70" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3246 22.8284">
-        <g clipPath="url(#clip0_1_1399)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths.p1daa5200} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-            <path d={svgPaths.p2aef6140} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_1_1399">
-            <rect fill="white" height="22.8284" width="23.3246" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-function MessageSquare({ isActive }: { isActive: boolean }) {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px]" data-name="MessageSquare">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke={isActive ? "var(--stroke-0, #FEB05D)" : "var(--stroke-0, #4B4B4B)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    </div>
-  );
-}
 
 function Frame1({ onNavigateHome, onNavigateTheorem, onNavigateRepository }: { onNavigateHome: () => void; onNavigateTheorem: () => void; onNavigateRepository: () => void }) {
   return (
     <div className="absolute content-stretch flex gap-[38.047px] items-end left-[54.63px] top-[14.68px]">
-      <MessageSquare isActive={true} />
+      <div className="relative shrink-0">
+        <MessageCircle className="w-6 h-6 text-[#FEB05D]" strokeWidth={1.5} />
+      </div>
       <button
         onClick={onNavigateTheorem}
-        className="relative rounded-[3.044px] shrink-0 size-[25.111px] opacity-70 transition-transform hover:scale-110 active:scale-95"
-        data-name="image 13"
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <img alt="Navigate to theorem" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[3.044px] size-full" src={imgImage13} />
+        <FileText className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <button
         onClick={onNavigateHome}
-        className="relative shrink-0 size-[27.394px] transition-transform hover:scale-110 active:scale-95 opacity-70"
-        data-name="happy_1949672 1"
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <img alt="Navigate to home" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgHappy19496721} />
+        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <BarChart onClick={onNavigateRepository} />
-      <Settings />
+      <button
+        onClick={onNavigateRepository}
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
+      >
+        <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </button>
+      <div className="relative shrink-0">
+        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </div>
     </div>
   );
 }

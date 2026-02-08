@@ -34,7 +34,7 @@ export default function App() {
             transition={{ duration: 0.4 }}
             className="absolute inset-0"
           >
-            <ChatPage 
+            <ChatPage
               onNavigateHome={() => setCurrentPage('home')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateRepository={() => setCurrentPage('repository')}
@@ -52,9 +52,9 @@ export default function App() {
             transition={{ duration: 0.4 }}
             className="absolute inset-0"
           >
-            <HomePage 
+            <HomePage
               onNavigateChat={() => setCurrentPage('chat')}
-              onNavigateTheorem={() => setCurrentPage('theoremEdit')}
+              onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateRepository={() => setCurrentPage('repository')}
               onNavigateGiftBox={() => setCurrentPage('energySelection')}
             />
@@ -71,7 +71,7 @@ export default function App() {
             transition={{ duration: 0.4 }}
             className="absolute inset-0"
           >
-            <NewRepositoryPage 
+            <NewRepositoryPage
               onNavigateChat={() => setCurrentPage('chat')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateHome={() => setCurrentPage('home')}
@@ -126,7 +126,7 @@ export default function App() {
             transition={{ duration: 0.4 }}
             className="absolute inset-0"
           >
-            <EnergySelectionPage 
+            <EnergySelectionPage
               onNavigateChat={() => setCurrentPage('chat')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateHome={() => setCurrentPage('home')}
@@ -149,7 +149,7 @@ export default function App() {
             transition={{ duration: 0.4 }}
             className="absolute inset-0"
           >
-            <BoxOpeningPage 
+            <BoxOpeningPage
               onNavigateChat={() => setCurrentPage('chat')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateHome={() => setCurrentPage('home')}
@@ -169,7 +169,7 @@ export default function App() {
             transition={{ duration: 0.4 }}
             className="absolute inset-0"
           >
-            <BoxRevealPage 
+            <BoxRevealPage
               onNavigateChat={() => setCurrentPage('chat')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateHome={() => setCurrentPage('home')}

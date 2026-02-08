@@ -5,6 +5,7 @@ import JoyrepoTitle from '../imports/Joyrepo';
 import { cardsApi } from '../api';
 import type { JoyCard } from '../types';
 
+//repopage, showing calendar and emotion cards, with nav bar at the bottom to switch between pages
 // Circular puzzle piece component
 interface PuzzlePieceProps {
   color: string;
@@ -65,9 +66,6 @@ function Heatmap() {
       <div className="relative w-full h-[115px]">
         <HeatmapVector />
       </div>
-      <p className="font-['Istok_Web:Regular',sans-serif] text-[8px] text-right text-black mt-1">
-        1 Happiness in 2026
-      </p>
     </div>
   );
 }
@@ -81,7 +79,7 @@ interface BottomNavProps {
 
 function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: BottomNavProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-[84px] flex items-center justify-around px-8 z-50">
+    <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-[84px] flex items-center justify-around px-8 z-50">
       <button onClick={onNavigateChat} className="p-2 transition-transform hover:scale-110 active:scale-95">
         <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
@@ -97,7 +95,7 @@ function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: Bottom
       <button className="p-2 transition-transform hover:scale-110 active:scale-95">
         <Settings className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      
+
       {/* Home Indicator */}
       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[140px] h-[5px] bg-black rounded-full" />
     </div>
@@ -120,7 +118,6 @@ interface NewRepositoryPageProps {
 }
 
 export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, onNavigateHome }: NewRepositoryPageProps) {
-  const [activeTab, setActiveTab] = useState<'formula' | 'theorem'>('formula');
   const [cards, setCards] = useState<JoyCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -152,66 +149,30 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
             <JoyrepoTitle />
           </div>
 
-          {/* Tab Buttons */}
-          <div className="flex justify-center gap-4 px-8 mb-4">
-            <button
-              onClick={() => setActiveTab('formula')}
-              className={`px-6 py-2 rounded-full text-[14px] font-['Istok_Web:Regular',sans-serif] transition-colors ${
-                activeTab === 'formula' 
-                  ? 'bg-[#e8e8e8] text-black' 
-                  : 'bg-[#d4d4d4] text-gray-600'
-              }`}
-            >
-              Formula
-            </button>
-            <button
-              onClick={() => setActiveTab('theorem')}
-              className={`px-6 py-2 rounded-full text-[14px] font-['Istok_Web:Regular',sans-serif] transition-colors ${
-                activeTab === 'theorem' 
-                  ? 'bg-[#e8e8e8] text-black' 
-                  : 'bg-[#d4d4d4] text-gray-600'
-              }`}
-            >
-              Theorem
-            </button>
-          </div>
-
           {/* Heatmap below tabs */}
           <Heatmap />
         </div>
 
         {/* Content Area - Scrollable */}
-        <div className="absolute top-[310px] left-0 right-0 bottom-[84px] overflow-y-auto">
-          {/* Formula Tab Content */}
-          {activeTab === 'formula' && (
-            <div className="pt-4 pb-6">
-              {isLoading ? (
-                <div className="flex items-center justify-center h-32">
-                  <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">Loading cards...</p>
-                </div>
-              ) : cards.length === 0 ? (
-                <div className="flex items-center justify-center h-32">
-                  <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">No joy cards yet. Start chatting to create your first one!</p>
-                </div>
-              ) : (
-                cards.map((card) => (
-                  <FormulaCard 
-                    key={card.id} 
-                    date={new Date(card.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                  />
-                ))
-              )}
-            </div>
-          )}
-
-          {/* Theorem Tab Content */}
-          {activeTab === 'theorem' && (
-            <div className="flex items-center justify-center h-full">
-              <p className="font-['Istok_Web:Regular',sans-serif] text-[16px] text-[#999]">
-                Theorem view coming soon...
-              </p>
-            </div>
-          )}
+        <div className="absolute top-[260px] left-0 right-0 bottom-[84px] overflow-y-auto">
+          <div className="pt-4 pb-6">
+            {isLoading ? (
+              <div className="flex items-center justify-center h-32">
+                <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">Loading cards...</p>
+              </div>
+            ) : cards.length === 0 ? (
+              <div className="flex items-center justify-center h-32">
+                <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">No joy cards yet. Start chatting to create your first one!</p>
+              </div>
+            ) : (
+              cards.map((card) => (
+                <FormulaCard 
+                  key={card.id} 
+                  date={new Date(card.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                />
+              ))
+            )}
+          </div>
         </div>
 
         {/* Scroll Indicator */}

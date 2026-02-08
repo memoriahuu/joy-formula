@@ -53,10 +53,10 @@ def send_message(
     ).first()
 
     if not session:
-        raise HTTPException(status_code=404, detail="会话不存在")
+        raise HTTPException(status_code=404, detail="chat not existed")
 
     if session.status != SessionStatus.ACTIVE:
-        raise HTTPException(status_code=400, detail="会话已结束")
+        raise HTTPException(status_code=400, detail="chat ended")
 
     result = ChatService.process_message(session.messages, request.message)
     session.messages = result["updated_history"]
@@ -65,7 +65,9 @@ def send_message(
     card_data = None
     has_card_draft = False
     if result["is_complete"]:
-        formula = result["formula"]["formula"]
+        formula_result = result["formula"]
+        formula = formula_result["formula"]
+        card_summary = formula_result["card_summary"]
         all_user_inputs = "\n".join(
             msg["content"] for msg in session.messages if msg["role"] == "user"
         )
@@ -82,7 +84,7 @@ def send_message(
             existing_card.formula_event = formula.get("event")
             existing_card.formula_trigger = formula.get("trigger")
             existing_card.formula_sensation = formula.get("sensation")
-            existing_card.card_summary = result["formula"]["card_summary"]
+            existing_card.card_summary = card_summary
             existing_card.conversation_history = session.messages
             card = existing_card
         else:
@@ -94,7 +96,7 @@ def send_message(
                 formula_event=formula.get("event"),
                 formula_trigger=formula.get("trigger"),
                 formula_sensation=formula.get("sensation"),
-                card_summary=result["formula"]["card_summary"],
+                card_summary=card_summary,
                 conversation_history=session.messages
             )
             db.add(card)
@@ -117,10 +119,9 @@ def send_message(
     db.commit()
 
     return {
-        "assistant_reply": result["assistant_reply"],
-        "has_card_draft": has_card_draft or session.joy_card_id is not None,
-        "is_complete": False,
-        "card_data": card_data
+        "ai_response": result["assistant_reply"],
+        "is_complete": has_card_draft or session.joy_card_id is not None,
+        "card": card_data
     }
 
 

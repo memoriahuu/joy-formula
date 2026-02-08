@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import svgPaths from "../imports/svg-iurkbxnnb8";
+import joyBlindboxTitle from "../assets/joyblindbox .png";
 import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
 import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
 import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
@@ -41,7 +42,11 @@ function Frame1() {
 function Joyblindbox() {
   return (
     <div className="absolute h-[40.768px] left-[61.15px] top-[39.14px] w-[269.882px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[134.94px] not-italic text-[#2b2a2a] text-[40.768px] text-center top-0 w-[269.882px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <img
+        alt="JOYBLINDBOX"
+        className="absolute left-0 top-0 h-full w-full object-contain"
+        src={joyBlindboxTitle}
+      />
       <Frame />
       <Frame1 />
     </div>

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-svkz6eqmyl";
-import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
-import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
-import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
-import { insightsApi } from '../api';
-import type { JoyInsight } from '../types';
+import joyRepoTitle from "../assets/joyrepo.png";
+import { insightsApi, cardsApi } from '../api';
+import type { JoyInsight, JoyCard } from '../types';
 
-function Frame9() {
+//theorem page with card decks
+
+function Frame9({ summary }: { summary?: string | null }) {
   return (
     <div className="absolute h-[251.21px] left-[47.5px] top-[299.53px] w-[297.695px]">
       <div className="absolute flex h-[251.21px] items-center justify-center left-0 top-0 w-[297.695px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
@@ -16,7 +17,9 @@ function Frame9() {
       </div>
       <div className="absolute flex h-[117.992px] items-center justify-center left-[42.34px] top-[71.85px] w-[210.887px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
         <div className="flex-none rotate-[11.48deg]">
-          <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">{`"A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."`}</p>
+          <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">
+            "{summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}"
+          </p>
         </div>
       </div>
       <div className="absolute flex h-[32.965px] items-center justify-center left-[58.62px] top-[43.94px] w-[79.042px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
@@ -372,64 +375,25 @@ function Component1() {
   );
 }
 
-function BarChart() {
-  return (
-    <div className="h-[27.394px] relative shrink-0 w-[29.677px]" data-name="Bar chart-2">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 29.6769 27.394">
-        <g id="Bar chart-2">
-          <path d={svgPaths.p1b098100} id="Icon" stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2243" />
-        </g>
-      </svg>
-    </div>
-  );
-}
-
-function Settings() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px]" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3246 22.8284">
-        <g clipPath="url(#clip0_13_217)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths.p1daa5200} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-            <path d={svgPaths.p2aef6140} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_13_217">
-            <rect fill="white" height="22.8284" width="23.3246" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-function MessageSquare() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px]" data-name="MessageSquare">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="var(--stroke-0, #4B4B4B)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    </div>
-  );
-}
 
 function Frame7({ onNavigateChat, onNavigateHome, onNavigateRepository }: { onNavigateChat: () => void; onNavigateHome: () => void; onNavigateRepository: () => void }) {
   return (
     <div className="absolute content-stretch flex gap-[38.047px] items-end left-[54.63px] top-[14.68px]">
-      <button onClick={onNavigateChat} className="relative transition-transform hover:scale-110 active:scale-95">
-        <MessageSquare />
+      <button onClick={onNavigateChat} className="relative shrink-0 transition-transform hover:scale-110 active:scale-95">
+        <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button className="relative rounded-[3.044px] shrink-0 size-[27.394px] opacity-70" data-name="image 12">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[3.044px] size-full" src={imgImage12} />
+      <div className="relative shrink-0">
+        <FileText className="w-6 h-6 text-[#FEB05D]" strokeWidth={1.5} />
+      </div>
+      <button onClick={onNavigateHome} className="relative shrink-0 transition-transform hover:scale-110 active:scale-95">
+        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button onClick={onNavigateHome} className="relative shrink-0 size-[27.394px] transition-transform hover:scale-110 active:scale-95" data-name="happy_1949672 1">
-        <img alt="Navigate to home" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgHappy19496721} />
+      <button onClick={onNavigateRepository} className="relative shrink-0 transition-transform hover:scale-110 active:scale-95">
+        <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button onClick={onNavigateRepository} className="relative transition-transform hover:scale-110 active:scale-95">
-        <BarChart />
-      </button>
-      <Settings />
+      <div className="relative shrink-0">
+        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </div>
     </div>
   );
 }
@@ -484,7 +448,11 @@ function Frame6() {
         </div>
       </div>
       <Frame />
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-0 not-italic text-[40.768px] text-black top-0">JOYREPO</p>
+      <img
+        alt="JOYREPO"
+        className="absolute left-0 top-0 h-full w-full object-contain"
+        src={joyRepoTitle}
+      />
     </div>
   );
 }
@@ -497,8 +465,25 @@ interface TheoremPageProps {
 
 export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigateRepository }: TheoremPageProps) {
   const [insights, setInsights] = useState<JoyInsight[]>([]);
+  const [latestCard, setLatestCard] = useState<JoyCard | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // 获取最新的JoyCard
+  useEffect(() => {
+    const loadLatestCard = async () => {
+      try {
+        const response = await cardsApi.getCards(0, 1);
+        if (response.cards && response.cards.length > 0) {
+          setLatestCard(response.cards[0]);
+        }
+      } catch (error) {
+        console.error('Failed to load latest card:', error);
+      }
+    };
+
+    loadLatestCard();
+  }, []);
 
   // 获取定律列表
   useEffect(() => {
@@ -534,7 +519,7 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
 
   return (
     <div className="bg-white relative size-full" data-name="Thereom">
-      <Frame9 />
+      <Frame9 summary={latestCard?.card_summary} />
       <Frame8 />
       <div className="absolute flex h-[388.465px] items-center justify-center left-[138.5px] top-[64.53px] w-[386.334px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "959" } as React.CSSProperties}>
         <div className="flex-none rotate-[-48.45deg]">
@@ -548,10 +533,6 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
       </div>
       <Frame10 />
       <Component onNavigateChat={onNavigateChat} onNavigateHome={onNavigateHome} onNavigateRepository={onNavigateRepository} />
-      <div className="absolute bg-[#ccc] h-[38.322px] left-[75.01px] rounded-[36px] shadow-[0px_2px_4px_0px_rgba(84,84,84,0.25)] top-[105.18px] w-[119.857px]" />
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[109.26px] not-italic text-[14.309px] text-black top-[114.15px]">Formula</p>
-      <div className="absolute bg-[#e8e8e8] h-[38.322px] left-[206.28px] rounded-[36px] shadow-[0px_2px_4px_0px_rgba(84,84,84,0.25)] top-[105.18px] w-[119.857px]" />
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[240.53px] not-italic text-[14.309px] text-black top-[114.15px]">Thereom</p>
       <Frame6 />
     </div>
   );

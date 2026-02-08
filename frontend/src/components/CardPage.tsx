@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import svgPaths from "../imports/svg-jkcsv643nd";
 import imgImage9 from "figma:asset/a442465baf4be4743588f4589afd2d541ab38494.png";
+import joyFrameTitle from "../assets/joyframe.png";
 
 // Import from the original design file for the colorful card page
 function Frame19() {
@@ -194,7 +195,11 @@ function Frame6() {
 function Frame7() {
   return (
     <div className="absolute h-[59.952px] left-[85px] top-[47px] w-[322px]">
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-0 not-italic text-[#2b2a2a] text-[50.363px] top-0">JOYFORMULA</p>
+      <img
+        alt="JOYFORMULA"
+        className="absolute left-0 top-0 h-full w-full object-contain"
+        src={joyFrameTitle}
+      />
       <Frame5 />
       <div className="absolute flex h-[14.124px] items-center justify-center left-[128.61px] top-[24.17px] w-[9.168px]" style={{ "--transform-inner-width": "1184.65625", "--transform-inner-height": "154" } as React.CSSProperties}>
         <div className="flex-none rotate-[-179.58deg]">

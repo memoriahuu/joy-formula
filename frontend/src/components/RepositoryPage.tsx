@@ -1,8 +1,9 @@
 import { motion } from 'motion/react';
+import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-yf3nbfz6ej";
-import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
-import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
-import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
+import joyRepoTitle from "../assets/joyrepo.png";
+
+//overall repo page, showing calendar and emotion cards, with nav bar at the bottom to switch between pages
 
 function Component2() {
   return (
@@ -12,78 +13,41 @@ function Component2() {
   );
 }
 
-function BarChart({ isActive, onClick }: { isActive: boolean; onClick?: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="h-[27.394px] relative shrink-0 w-[29.677px] transition-transform hover:scale-110 active:scale-95"
-      data-name="Bar chart-2"
-    >
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 29.6769 27.394">
-        <g id="Bar chart-2">
-          <path 
-            d={svgPaths.p1b098100} 
-            id="Icon" 
-            stroke={isActive ? "var(--stroke-0, #FEB05D)" : "var(--stroke-0, #4B4B4B)"} 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth="2.2243" 
-          />
-        </g>
-      </svg>
-    </button>
-  );
-}
-
-function Settings() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px] opacity-70" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3246 22.8284">
-        <g clipPath="url(#clip0_1_1399)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths.p1daa5200} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-            <path d={svgPaths.p2aef6140} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_1_1399">
-            <rect fill="white" height="22.8284" width="23.3246" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
 
 function Frame1({ onNavigateTheorem, onNavigateCard, onNavigateHome }: { onNavigateTheorem: () => void; onNavigateCard: () => void; onNavigateHome: () => void }) {
   return (
     <div className="absolute content-stretch flex gap-[38.047px] items-end left-[54.63px] top-[14.68px]">
-      <div className="relative rounded-[3.044px] shrink-0 size-[27.394px] opacity-70" data-name="image 12">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[3.044px] size-full" src={imgImage12} />
+      <div className="relative shrink-0">
+        <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </div>
       <button
         onClick={onNavigateTheorem}
-        className="relative rounded-[3.044px] shrink-0 size-[25.111px] transition-transform hover:scale-110 active:scale-95"
-        data-name="image 13"
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <img alt="Navigate to theorem" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgImage13} />
+        <FileText className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <button
         onClick={onNavigateCard}
-        className="relative shrink-0 size-[27.394px] transition-transform hover:scale-110 active:scale-95 opacity-70"
-        data-name="happy_1949672 1"
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <img alt="Navigate to card" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgHappy19496721} />
+        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <BarChart isActive={true} onClick={onNavigateHome} />
-      <Settings />
+      <button
+        onClick={onNavigateHome}
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
+      >
+        <BarChart3 className="w-6 h-6 text-[#FEB05D]" strokeWidth={1.5} />
+      </button>
+      <div className="relative shrink-0">
+        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </div>
     </div>
   );
 }
 
 function Component1({ onNavigateTheorem, onNavigateCard, onNavigateHome }: { onNavigateTheorem: () => void; onNavigateCard: () => void; onNavigateHome: () => void }) {
   return (
-    <div className="absolute bg-[rgba(255,255,255,0)] h-[84.797px] left-[-1.63px] top-[766.43px] w-[394.631px]" data-name="标签栏">
+    <div className="absolute bg-[rgba(255,255,255,0)] h-[84.797px] left-[-1.63px] top-[766.43px] w-[393px]" data-name="标签栏">
       <Component2 />
       <Frame1 onNavigateTheorem={onNavigateTheorem} onNavigateCard={onNavigateCard} onNavigateHome={onNavigateHome} />
     </div>
@@ -114,22 +78,16 @@ export default function RepositoryPage({ onNavigateTheorem, onNavigateCard, onNa
         transition={{ duration: 0.5 }}
         className="absolute left-[114px] top-[50px] w-[180px]"
       >
-        <p className="font-['Itim:Regular',sans-serif] text-[32px] text-black text-center">JOYREPO</p>
+        <img
+          alt="JOYREPO"
+          className="h-[32px] w-full object-contain"
+          src={joyRepoTitle}
+        />
         <div className="flex gap-2 justify-center mt-2">
           <div className="h-[1.5px] w-0 bg-black" />
           <div className="h-[1.5px] w-0 bg-black" />
         </div>
       </motion.div>
-
-      {/* Tabs */}
-      <div className="absolute left-[75px] top-[105px] flex gap-[20px]">
-        <button className="bg-[#eee] rounded-[12px] px-[24px] py-[8px]">
-          <p className="font-['Istok_Web:Regular',sans-serif] text-[16px] text-black">Formula</p>
-        </button>
-        <button className="bg-[#d0d0d0] rounded-[12px] px-[24px] py-[8px]">
-          <p className="font-['Istok_Web:Regular',sans-serif] text-[16px] text-black">Thereom</p>
-        </button>
-      </div>
 
       {/* Calendar Grid */}
       <div className="absolute left-[34px] top-[170px] right-[34px]">

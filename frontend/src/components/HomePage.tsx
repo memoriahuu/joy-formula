@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-bb8qo2f75h";
 import svgPaths2 from "../imports/svg-qg7g61fb9c";
 import svgPathsTheorem from "../imports/svg-8blp8pu86r";
 import svgPathsGiftBox from "../imports/svg-bkazuxlag9";
-import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
-import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
-import imgHappy19496721 from "figma:asset/d55f0c6f64187b2aff71cc2cc23da08b81665f02.png";
 import imgImage9 from "figma:asset/f232edc536b9310bdca4bcd53c1aee8a1be5c1d1.png";
+import joyFrameTitle from "../assets/joyframe.png";
+import joyBlindboxTitle from "../assets/joyblindbox .png";
+import { cardsApi } from '../api';
+import type { JoyCard } from '../types';
 
 type CardType = 'scene' | 'people' | 'trigger' | 'senses' | 'feeling' | null;
 
@@ -86,15 +88,15 @@ function TheoremCardFrame() {
 function TheoremCardNotification() {
   return (
     <div className="absolute bg-[#f0817f] content-stretch flex flex-col items-center justify-center left-[54.63px] px-[4.892px] py-[1.631px] rounded-[6.93px] size-[13.861px] top-[1.63px]">
-      <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
+      <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
     </div>
   );
 }
 
-function TheoremCard({ onNavigateTheorem }: { onNavigateTheorem: () => void }) {
+function TheoremCard({ onNavigateTheoremEdit }: { onNavigateTheoremEdit: () => void }) {
   return (
     <motion.button
-      onClick={onNavigateTheorem}
+      onClick={onNavigateTheoremEdit}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.5 }}
@@ -128,7 +130,11 @@ function TheoremCard({ onNavigateTheorem }: { onNavigateTheorem: () => void }) {
 function GiftBoxFrame() {
   return (
     <div className="h-[3.981px] relative w-[26.351px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[13.18px] not-italic text-[#a28f7e] text-[3.981px] text-center top-0 w-[26.351px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <img
+        alt="JOYBLINDBOX"
+        className="absolute inset-0 h-full w-full object-contain"
+        src={joyBlindboxTitle}
+      />
       <div className="absolute h-[0.431px] left-[3.19px] top-[1.59px] w-0">
         <div className="absolute inset-[-30%_-0.13px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 0.258736 0.689962">
@@ -164,7 +170,7 @@ function GiftBoxFrame() {
 function GiftBoxNotification() {
   return (
     <div className="absolute bg-[#f0817f] content-stretch flex flex-col items-center justify-center left-[68.29px] px-[4.892px] py-[1.631px] rounded-[6.93px] size-[13.861px] top-[12.95px]">
-      <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
+      <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
     </div>
   );
 }
@@ -230,17 +236,74 @@ function GiftBox({ onNavigateGiftBox }: { onNavigateGiftBox?: () => void }) {
   );
 }
 
-function Frame14() {
+function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string | null; selectedCard: CardType; joyCard: JoyCard | null; onClose: () => void }) {
+  const cardConfigs: Record<Exclude<CardType, null>, { title: string; color: string; content: string }> = {
+    scene: {
+      title: 'Scene',
+      color: '#5a7acd',
+      content: joyCard?.formula_scene || 'Around 6 PM after work, by the window at a cafe near the office',
+    },
+    people: {
+      title: 'People',
+      color: '#f98080',
+      content: joyCard?.formula_people || 'Just me, enjoying my own company',
+    },
+    trigger: {
+      title: 'Trigger',
+      color: '#4190ae',
+      content: joyCard?.formula_trigger || 'The warm afternoon sunlight streaming through the window',
+    },
+    senses: {
+      title: 'Senses',
+      color: '#ec871b',
+      content: joyCard?.formula_sensation || 'Warm light on my skin, the smell of fresh coffee, soft background music',
+    },
+    feeling: {
+      title: 'Event',
+      color: '#8b679d',
+      content: joyCard?.formula_event || 'Reading a book while sipping coffee',
+    }
+  };
+
+  const isShowingCard = selectedCard !== null;
+  const card = selectedCard ? cardConfigs[selectedCard] : null;
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
       className="absolute bg-white h-[141.056px] leading-[normal] left-[35.88px] not-italic overflow-clip rounded-bl-[14.754px] rounded-br-[14.754px] shadow-[2.951px_2.951px_14.754px_1.475px_rgba(191,172,89,0.25)] top-[481.06px] w-[329.402px] whitespace-pre-wrap"
     >
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[19.918px] left-[20.38px] text-[#f90] text-[29.508px] top-[24.46px] w-[13.279px]">"</p>
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[22.131px] left-[290.27px] text-[#f90] text-[29.508px] top-[75.83px] w-[18.443px]">"</p>
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough.</p>
+      {isShowingCard && card ? (
+        <>
+          {/* Card Detail View */}
+          <button
+            onClick={onClose}
+            className="absolute right-[15px] top-[15px] text-gray-400 hover:text-gray-600 text-[20px] font-bold z-10"
+          >
+            ×
+          </button>
+          <p
+            className="absolute font-['Istok_Web:Bold',sans-serif] left-[20.38px] text-[18px] top-[20px]"
+            style={{ color: card.color }}
+          >
+            {card.title}
+          </p>
+          <p className="absolute font-['Istok_Web:Regular',sans-serif] left-[20.38px] right-[20.38px] text-[#3a3a3a] text-[13px] leading-relaxed top-[50px]">
+            {card.content}
+          </p>
+        </>
+      ) : (
+        <>
+          {/* Summary View */}
+          <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[19.918px] left-[20.38px] text-[#f90] text-[29.508px] top-[24.46px] w-[13.279px]">"</p>
+          <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[22.131px] left-[290.27px] text-[#f90] text-[29.508px] top-[75.83px] w-[18.443px]">"</p>
+          <p className="-translate-x-1/2 absolute font-['Istok_Web:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">
+            {summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}
+          </p>
+        </>
+      )}
     </motion.div>
   );
 }
@@ -263,7 +326,7 @@ function Frame17({ onNavigateChat }: { onNavigateChat: () => void }) {
           </div>
         </div>
       </div>
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[0] left-[20.38px] not-italic text-[#6a4206] text-[19.568px] top-[34.24px]">
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[20.38px] not-italic text-[#6a4206] text-[19.568px] top-[34.24px]">
         <span className="leading-[normal]">{`Start Your `}</span>
         <span className="leading-[normal] text-[#ed7300]">Happiness</span>
         <span className="leading-[normal]">{` Now!`}</span>
@@ -512,7 +575,7 @@ function Frame20({ onClick }: { onClick: () => void }) {
 }
 
 // Card Modal Component
-function CardModal({ cardType, onClose }: { cardType: CardType; onClose: () => void }) {
+function CardModal({ cardType, onClose, joyCard }: { cardType: CardType; onClose: () => void; joyCard: JoyCard | null }) {
   if (!cardType) return null;
 
   const cardConfigs: Record<Exclude<CardType, null>, CardData> = {
@@ -521,7 +584,7 @@ function CardModal({ cardType, onClose }: { cardType: CardType; onClose: () => v
       color: '#5a7acd',
       backgroundColor: '#cad4ef',
       percentage: '36%',
-      content: 'Around 6 PM after work, by the window at a cafe near the office',
+      content: joyCard?.formula_scene || 'Around 6 PM after work, by the window at a cafe near the office',
       icon: (
         <div className="absolute left-[15px] top-[100px]">
           <div className="h-[78.766px] w-[75.273px]">
@@ -557,7 +620,7 @@ function CardModal({ cardType, onClose }: { cardType: CardType; onClose: () => v
       color: '#f98080',
       backgroundColor: '#ffcece',
       percentage: '10%',
-      content: 'Just me, enjoying my own company',
+      content: joyCard?.formula_people || 'Just me, enjoying my own company',
       icon: (
         <div className="absolute flex h-[67.009px] items-center justify-center left-0 top-[108px] w-[72.838px]">
           <div className="-scale-y-100 flex-none rotate-[-0.87deg]">
@@ -571,7 +634,7 @@ function CardModal({ cardType, onClose }: { cardType: CardType; onClose: () => v
       color: '#4190ae',
       backgroundColor: '#bdd3db',
       percentage: '12%',
-      content: 'The warm afternoon sunlight streaming through the window',
+      content: joyCard?.formula_trigger || 'The warm afternoon sunlight streaming through the window',
       icon: (
         <div className="absolute flex h-[57.426px] items-center justify-center left-[30px] top-[108px] w-[70.25px]">
           <div className="flex-none rotate-[179.27deg]">
@@ -585,15 +648,15 @@ function CardModal({ cardType, onClose }: { cardType: CardType; onClose: () => v
       color: '#ec871b',
       backgroundColor: '#ffd6aa',
       percentage: '36%',
-      content: 'Warm light on my skin, the smell of fresh coffee, soft background music',
+      content: joyCard?.formula_sensation || 'Warm light on my skin, the smell of fresh coffee, soft background music',
       icon: <div className="absolute left-0 top-[49.74px]"><Frame3 /></div>
     },
     feeling: {
-      title: 'Feeling',
+      title: 'Event',
       color: '#8b679d',
       backgroundColor: '#ddc6ed',
       percentage: '36%',
-      content: 'Peaceful, content, and grateful for this quiet moment',
+      content: joyCard?.formula_event || 'Reading a book while sipping coffee',
       icon: <div className="absolute left-[78.27px] top-[49.74px]"><Frame7 /></div>
     }
   };
@@ -677,13 +740,11 @@ function Frame2() {
       transition={{ duration: 0.5 }}
       className="absolute h-[48.882px] left-[69.3px] top-[38.32px] w-[262.544px]"
     >
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-0 not-italic text-[#2b2a2a] text-[41.063px] top-0">JOYFORMULA</p>
-      <Frame />
-      <div className="absolute flex h-[12.624px] items-center justify-center left-[104.86px] top-[19.71px] w-[7.483px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "153.5" } as React.CSSProperties}>
-        <div className="flex-none rotate-[-179.58deg]">
-          <Frame1 />
-        </div>
-      </div>
+      <img
+        alt="JOYFORMULA"
+        className="absolute left-0 top-0 h-full w-full object-contain"
+        src={joyFrameTitle}
+      />
     </motion.div>
   );
 }
@@ -712,45 +773,6 @@ function Component2() {
   );
 }
 
-function BarChart() {
-  return (
-    <div className="h-[27.394px] relative shrink-0 w-[29.677px] opacity-70" data-name="Bar chart-2">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M18 20V10M12 20V4M6 20V14" stroke="var(--stroke-0, #4B4B4B)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </div>
-  );
-}
-
-function Settings() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px] opacity-70" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3246 22.8284">
-        <g clipPath="url(#clip0_13_217)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths2.p1daa5200} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-            <path d={svgPaths2.p2aef6140} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.98508" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_13_217">
-            <rect fill="white" height="22.8284" width="23.3246" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-function MessageSquare() {
-  return (
-    <div className="h-[22.828px] relative shrink-0 w-[23.325px] opacity-70" data-name="MessageSquare">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="var(--stroke-0, #4B4B4B)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    </div>
-  );
-}
 
 function Frame15({ onNavigateChat, onNavigateTheorem, onNavigateRepository }: { onNavigateChat: () => void; onNavigateTheorem: () => void; onNavigateRepository: () => void }) {
   return (
@@ -759,25 +781,26 @@ function Frame15({ onNavigateChat, onNavigateTheorem, onNavigateRepository }: { 
         onClick={onNavigateChat}
         className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <MessageSquare />
+        <MessageCircle className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <button
         onClick={onNavigateTheorem}
-        className="relative rounded-[3.044px] shrink-0 size-[25.111px] transition-transform hover:scale-110 active:scale-95 opacity-70"
-        data-name="image 13"
+        className="relative shrink-0 transition-transform hover:scale-110 active:scale-95"
       >
-        <img alt="Navigate to theorem" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[3.044px] size-full" src={imgImage13} />
+        <FileText className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button className="relative shrink-0 size-[27.394px]" data-name="happy_1949672 1">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgHappy19496721} />
+      <button className="relative shrink-0">
+        <Smile className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <button
         onClick={onNavigateRepository}
         className="relative transition-transform hover:scale-110 active:scale-95"
       >
-        <BarChart />
+        <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <Settings />
+      <button className="relative shrink-0">
+        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      </button>
     </div>
   );
 }
@@ -794,16 +817,37 @@ function Component1({ onNavigateChat, onNavigateTheorem, onNavigateRepository }:
 interface HomePageProps {
   onNavigateChat: () => void;
   onNavigateTheorem: () => void;
+  onNavigateTheoremEdit: () => void;
   onNavigateRepository: () => void;
   onNavigateGiftBox?: () => void;
 }
 
-export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigateRepository, onNavigateGiftBox }: HomePageProps) {
+export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigateTheoremEdit, onNavigateRepository, onNavigateGiftBox }: HomePageProps) {
   const [selectedCard, setSelectedCard] = useState<CardType>(null);
+  const [latestCard, setLatestCard] = useState<JoyCard | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load latest joy card
+  useEffect(() => {
+    const loadLatestCard = async () => {
+      try {
+        const response = await cardsApi.getCards(0, 1);
+        if (response.cards && response.cards.length > 0) {
+          setLatestCard(response.cards[0]);
+        }
+      } catch (error) {
+        console.error('Failed to load latest card:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadLatestCard();
+  }, []);
 
   return (
     <div className="relative size-full" data-name="主页：快乐公式展示" style={{ backgroundImage: "linear-gradient(rgba(90, 122, 205, 0.2) 19.712%, rgba(255, 162, 162, 0.2) 44.231%, rgba(90, 156, 181, 0.2) 75.962%, rgba(254, 176, 93, 0.2) 100%), linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 100%)" }}>
-      <Frame14 />
+      <Frame14 summary={latestCard?.card_summary} />
       <Frame17 onNavigateChat={onNavigateChat} />
       <p className="absolute font-['Istok_Web:Regular',sans-serif] h-[25.276px] leading-[normal] left-[261.73px] not-italic text-[16.307px] text-black top-[142.69px] w-[102.734px] whitespace-pre-wrap">Feb 6th, 2026</p>
       <Frame8 />
@@ -822,7 +866,7 @@ export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigate
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[256.02px] not-italic text-[8.154px] text-black top-[163.89px] w-[107.627px] whitespace-pre-wrap">This is your 96th JoyFormula.</p>
       
       {/* Theorem Card and Gift Box */}
-      <TheoremCard onNavigateTheorem={onNavigateTheorem} />
+      <TheoremCard onNavigateTheoremEdit={onNavigateTheoremEdit} />
       <GiftBox onNavigateGiftBox={onNavigateGiftBox} />
       
       <Component1 onNavigateChat={onNavigateChat} onNavigateTheorem={onNavigateTheorem} onNavigateRepository={onNavigateRepository} />
@@ -830,7 +874,7 @@ export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigate
       {/* Card Modal */}
       <AnimatePresence>
         {selectedCard && (
-          <CardModal cardType={selectedCard} onClose={() => setSelectedCard(null)} />
+          <CardModal cardType={selectedCard} onClose={() => setSelectedCard(null)} joyCard={latestCard} />
         )}
       </AnimatePresence>
     </div>

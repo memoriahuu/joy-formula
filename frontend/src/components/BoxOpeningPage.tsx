@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import svgPaths from "../imports/svg-x9wxv4rr9c";
+import joyBlindboxTitle from "../assets/joyblindbox .png";
 import imgImage10 from "figma:asset/4d63ccd21549b22cd5515f8a273e040386394a5f.png";
 import imgImage12 from "figma:asset/481ec9271992b35c78654813354c17a1bbe7b8b3.png";
 import imgImage13 from "figma:asset/dcf8b305885a632a490f729fe314980e8742e12a.png";
@@ -41,7 +42,11 @@ function Frame1() {
 function Frame3() {
   return (
     <div className="absolute h-[40.768px] left-[61.15px] top-[39.14px] w-[269.882px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[134.94px] not-italic text-[#2b2a2a] text-[40.768px] text-center top-0 w-[269.882px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <img
+        alt="JOYBLINDBOX"
+        className="absolute left-0 top-0 h-full w-full object-contain"
+        src={joyBlindboxTitle}
+      />
       <Frame />
       <Frame1 />
     </div>
@@ -51,7 +56,11 @@ function Frame3() {
 function Frame4() {
   return (
     <div className="h-[11.055px] relative w-[73.185px]">
-      <p className="-translate-x-1/2 absolute font-['Itim:Regular',sans-serif] leading-none left-[36.59px] not-italic text-[#a28f7e] text-[11.055px] text-center top-0 w-[73.185px] whitespace-pre-wrap">JOYBLINDBOX</p>
+      <img
+        alt="JOYBLINDBOX"
+        className="absolute left-0 top-0 h-full w-full object-contain"
+        src={joyBlindboxTitle}
+      />
       <div className="absolute h-[1.198px] left-[8.84px] top-[4.42px] w-0">
         <div className="absolute inset-[-30%_-0.36px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 0.718586 1.91623">

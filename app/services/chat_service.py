@@ -1,12 +1,9 @@
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from app.services.ai_service import ai_service
 from app.i18n.state import get_language
 from app.i18n.translations import JOY_COACH_SYSTEM_PROMPT, CHAT_INITIAL_MESSAGE
 import json
 import re
-
-# 匹配 ```json ... ``` 代码块
-_JSON_BLOCK_RE = re.compile(r'```json\s*(\{.*?\})\s*```', re.DOTALL)
 
 
 class ChatService:
@@ -43,77 +40,38 @@ class ChatService:
             temperature=0.7
         )
 
-        # 提取公式数据，并从展示内容中剥离 JSON 块
-        formula_data, display_reply = ChatService._extract_and_clean(ai_reply)
+        # 检查是否包含完整的公式（检测JSON输出）
+        formula_data = ChatService._extract_formula(ai_reply)
+
+        # 如果检测到公式，从显示内容中移除 JSON 代码块
+        display_reply = ai_reply
+        if formula_data is not None:
+            # 移除 JSON 代码块，只保留其他文本
+            display_reply = re.sub(r'```json\s*\{.*?\}\s*```', '', ai_reply, flags=re.DOTALL).strip()
+            # 如果移除后为空，添加一个默认消息
+            if not display_reply:
+                display_reply = "Great! I've created your joy card! 🎉" if lang == "en" else "太棒了！我已经为你创建了快乐卡片！🎉"
 
         return {
             "assistant_reply": display_reply,
             "is_complete": formula_data is not None,
             "formula": formula_data,
-            "updated_history": messages + [{"role": "assistant", "content": display_reply}]
+            "updated_history": messages + [{"role": "assistant", "content": ai_reply}]  # 保留完整内容到历史
         }
 
     @staticmethod
-    def process_voice_message(conversation_history: List[Dict],
-                              audio_bytes: bytes, mime_type: str) -> Dict:
-        """
-        处理用户语音消息：一次性发送音频给 Gemini，获取转录和回复
+    def _extract_formula(ai_reply: str) -> Optional[Dict]:
+        """从AI回复中提取公式JSON"""
+        # 查找JSON代码块
+        json_match = re.search(r'```json\s*(\{.*?\})\s*```', ai_reply, re.DOTALL)
+        if not json_match:
+            return None
 
-        Returns:
-            {
-                "assistant_reply": "AI的回复",
-                "transcribed_text": "语音转录文本",
-                "is_complete": True/False,
-                "formula": {...} if is_complete else None,
-                "updated_history": [...]
-            }
-        """
-        lang = get_language()
-        result = ai_service.chat_with_audio(
-            system_prompt=JOY_COACH_SYSTEM_PROMPT[lang],
-            messages=conversation_history,
-            audio_bytes=audio_bytes,
-            mime_type=mime_type,
-            temperature=0.7
-        )
+        try:
+            data = json.loads(json_match.group(1))
+            if data.get("stage") == "complete" and "formula" in data:
+                return data
+        except json.JSONDecodeError:
+            return None
 
-        transcribed_text = result["transcribed_text"]
-        ai_reply = result["assistant_reply"]
-
-        # 将转录文本作为用户消息存入历史（保证后续对话有上下文）
-        messages = conversation_history + [{"role": "user", "content": transcribed_text}]
-
-        # 提取公式数据，并从展示内容中剥离 JSON 块
-        formula_data, display_reply = ChatService._extract_and_clean(ai_reply)
-
-        return {
-            "assistant_reply": display_reply,
-            "transcribed_text": transcribed_text,
-            "is_complete": formula_data is not None,
-            "formula": formula_data,
-            "updated_history": messages + [{"role": "assistant", "content": display_reply}]
-        }
-
-    @staticmethod
-    def _extract_and_clean(ai_reply: str) -> Tuple[Optional[Dict], str]:
-        """
-        从 AI 回复中提取公式 JSON，并返回去掉 JSON 块的干净文本
-
-        Returns:
-            (formula_data or None, 用户可见的干净回复)
-        """
-        formula_data = None
-        json_match = _JSON_BLOCK_RE.search(ai_reply)
-
-        if json_match:
-            try:
-                data = json.loads(json_match.group(1))
-                if data.get("stage") == "complete" and "formula" in data:
-                    formula_data = data
-            except json.JSONDecodeError:
-                pass
-
-        # 无论是否解析成功，都把 JSON 块从展示内容中去掉
-        display_reply = _JSON_BLOCK_RE.sub('', ai_reply).strip()
-
-        return formula_data, display_reply
+        return None

@@ -13,11 +13,9 @@ class ChatMessageRequest(BaseModel):
 
 
 class ChatMessageResponse(BaseModel):
-    assistant_reply: str
-    has_card_draft: bool
+    ai_response: str
     is_complete: bool
-    card_data: Optional[Dict] = None
-    transcribed_text: Optional[str] = None
+    card: Optional[Dict] = None
 
 
 class ChatCompleteRequest(BaseModel):

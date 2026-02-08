@@ -15,8 +15,8 @@ app = FastAPI(
 # CORS配置
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Hackathon阶段允许所有来源
-    allow_credentials=True,
+    allow_origins=["http://localhost:3000", "http://localhost:3002", "http://localhost:3001"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -117,10 +117,9 @@ def send_message(
     db.commit()
 
     return {
-        "assistant_reply": result["assistant_reply"],
-        "has_card_draft": has_card_draft or session.joy_card_id is not None,
-        "is_complete": False,
-        "card_data": card_data
+        "ai_response": result["assistant_reply"],
+        "is_complete": has_card_draft or session.joy_card_id is not None,
+        "card": card_data
     }
 
 

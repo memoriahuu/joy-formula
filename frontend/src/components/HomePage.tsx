@@ -102,23 +102,23 @@ function TheoremCard({ onNavigateTheoremEdit }: { onNavigateTheoremEdit: () => v
       transition={{ delay: 0.8, duration: 0.5 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="absolute h-[63.602px] w-[97.027px] cursor-pointer"
-      style={{ left: "82.35px", top: "703px" }}
+        className="absolute h-[63.602px] w-[97.027px] cursor-pointer"
+        style={{ left: "82.35px", top: "700px" }}
     >
       {/* Shadow */}
-      <div className="absolute h-[38.322px] left-0 top-[25.28px] w-[97.027px]">
+        <div className="absolute h-[38.322px] left-0 top-[25.28px] w-[97.027px]">
         <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 97.027 38.3216">
           <ellipse cx="48.5135" cy="19.1608" fill="var(--fill-0, #FFEDD8)" id="Ellipse 39" rx="48.5135" ry="19.1608" />
         </svg>
       </div>
       {/* Card Stack */}
-      <div className="absolute h-[59.521px] left-[13.86px] top-0 w-[69.668px]">
-        <div className="absolute flex h-[55.836px] items-center justify-center left-[1.25px] top-[1.84px] w-[67.17px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
+        <div className="absolute h-[59.521px] left-[13.86px] top-0 w-[69.668px]">
+          <div className="absolute flex h-[55.836px] items-center justify-center left-[1.25px] top-[1.84px] w-[67.17px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
           <div className="flex-none rotate-[-9.22deg]">
-            <div className="bg-[#a9d66a] h-[46.753px] rounded-[2.122px] shadow-[0px_0.849px_0.849px_0px_rgba(0,0,0,0.25)] w-[60.46px]" />
+              <div className="bg-[#a9d66a] h-[46.753px] rounded-[2.122px] shadow-[0px_0.849px_0.849px_0px_rgba(0,0,0,0.25)] w-[60.46px]" />
           </div>
         </div>
-        <div className="absolute bg-[#e6e6e6] h-[46.753px] left-[4.6px] rounded-[2.122px] shadow-[0px_0.849px_0.849px_0px_rgba(0,0,0,0.25)] top-[6.38px] w-[60.46px]" />
+          <div className="absolute bg-[#e6e6e6] h-[46.753px] left-[4.6px] rounded-[2.122px] shadow-[0px_0.849px_0.849px_0px_rgba(0,0,0,0.25)] top-[6.38px] w-[60.46px]" />
         <TheoremCardFrame />
         <TheoremCardNotification />
       </div>
@@ -184,8 +184,8 @@ function GiftBox({ onNavigateGiftBox }: { onNavigateGiftBox?: () => void }) {
       transition={{ delay: 0.85, duration: 0.5 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="absolute h-[73.382px] w-[103.332px] cursor-pointer"
-      style={{ left: "210px", top: "693.22px" }}
+        className="absolute h-[73.382px] w-[103.332px] cursor-pointer"
+        style={{ left: "210px", top: "700px" }}
     >
       {/* Shadow ellipses */}
       <div className="absolute h-[73.382px] left-0 top-0 w-[103.332px]">
@@ -273,7 +273,20 @@ function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
-      className="absolute bg-white h-[141.056px] leading-[normal] left-[35.88px] not-italic overflow-clip rounded-bl-[14.754px] rounded-br-[14.754px] shadow-[2.951px_2.951px_14.754px_1.475px_rgba(191,172,89,0.25)] top-[481.06px] w-[329.402px] whitespace-pre-wrap"
+      style={{
+        position: 'absolute',
+        backgroundColor: 'white',
+        minHeight: '100px',
+        left: '35.88px',
+        top: '481.06px',
+        width: '329.4px',
+        padding: '15px 20px',
+        borderBottomLeftRadius: '14.754px',
+        borderBottomRightRadius: '14.754px',
+        boxShadow: '2.951px 2.951px 14.754px 1.475px rgba(191,172,89,0.25)',
+        overflow: 'visible',
+        whiteSpace: 'pre-wrap'
+      }}
     >
       {isShowingCard && card ? (
         <>
@@ -285,23 +298,23 @@ function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string
             ×
           </button>
           <p
-            className="absolute font-['Istok_Web:Bold',sans-serif] left-[20.38px] text-[18px] top-[20px]"
+            className="font-['Istok_Web:Bold',sans-serif] text-[18px] mb-[20px]"
             style={{ color: card.color }}
           >
             {card.title}
           </p>
-          <p className="absolute font-['Istok_Web:Regular',sans-serif] left-[20.38px] right-[20.38px] text-[#3a3a3a] text-[13px] leading-relaxed top-[50px]">
+          <p className="font-['Istok_Web:Regular',sans-serif] text-[#3a3a3a] text-[13px] leading-relaxed">
             {card.content}
           </p>
         </>
       ) : (
         <>
           {/* Summary View */}
-          <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[19.918px] left-[20.38px] text-[#f90] text-[29.508px] top-[24.46px] w-[13.279px]">"</p>
-          <p className="absolute font-['Istok_Web:Bold',sans-serif] h-[22.131px] left-[290.27px] text-[#f90] text-[29.508px] top-[75.83px] w-[18.443px]">"</p>
-          <p className="-translate-x-1/2 absolute font-['Istok_Web:Regular',sans-serif] left-[164.55px] text-[#3a3a3a] text-[14.754px] text-center top-[44.03px] w-[250.818px]">
+          <p className="font-['Istok_Web:Bold',sans-serif] text-[#f90] text-[25px] mb-[5px]">"</p>
+          <p className="font-['Istok_Web:Regular',sans-serif] text-[#3a3a3a] text-[14.754px] text-center leading-relaxed mb-[8px]">
             {summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}
           </p>
+          <p className="font-['Istok_Web:Bold',sans-serif] text-[#f90] text-[25px] text-right">"</p>
         </>
       )}
     </motion.div>
@@ -315,18 +328,27 @@ function Frame17({ onNavigateChat }: { onNavigateChat: () => void }) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.7, duration: 0.5 }}
-      className="absolute h-[71.751px] left-[69.3px] top-[607.44px] w-[265.805px] hover:scale-105 transition-transform"
+      className="absolute hover:scale-105 transition-transform"
+      style={{ 
+        left: '65px',
+        top: '625px',
+        width: '260px',
+        height: '60px'
+      }}
     >
-      <div className="absolute flex h-[71.751px] items-center justify-center left-0 top-0 w-[265.805px]">
-        <div className="-scale-y-100 flex-none rotate-180">
-          <div className="h-[71.751px] relative w-[265.805px]">
+      <div className="absolute flex items-center justify-center left-0 top-0 w-full h-full">
+        <div className="-scale-y-100 flex-none rotate-180 w-full h-full">
+          <div className="relative w-full h-full">
             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 265.805 71.751">
               <path d={svgPaths.p3ba2c280} fill="var(--fill-0, #FFEDD8)" />
             </svg>
           </div>
         </div>
       </div>
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[0] left-[20.38px] not-italic text-[#6a4206] text-[19.568px] top-[34.24px]">
+      <p
+        className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-0 not-italic text-[#6a4206] text-[15px] -translate-y-1/2 text-center w-full px-4"
+        style={{ top: '65%' }}
+      >
         <span className="leading-[normal]">{`Start Your `}</span>
         <span className="leading-[normal] text-[#ed7300]">Happiness</span>
         <span className="leading-[normal]">{` Now!`}</span>

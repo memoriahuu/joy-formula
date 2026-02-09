@@ -322,53 +322,80 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
               className="mb-6"
             >
               {message.type === 'ai' ? (
-                // AI Message - positioned like Frame11
-                <div className="relative" style={{ marginLeft: '30.17px', width: '314.726px' }}>
-                  <div className="relative">
-                    <div className="flex items-center justify-center">
-                      <div className="-scale-y-100 flex-none rotate-180 w-full">
-                        <div className="min-h-[133.627px] relative w-full">
-                          <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 301.539 133.627">
-                            <path d={svgPaths.p3e013380} fill="var(--fill-0, #EFEFEF)" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                    {index === 0 && (
-                      <div className="absolute flex h-[19.137px] items-center justify-center left-0 bottom-[-5px] w-[25.912px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "20" } as React.CSSProperties}>
-                        <div className="-scale-y-100 flex-none rotate-[-167.86deg]">
-                          <div className="h-[14.546px] relative w-[23.376px]">
-                            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 23.3755 14.546">
-                              <path d={svgPaths.p1156fd80} fill="var(--fill-0, #EFEFEF)" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                // AI Message - CSS bubble with auto height
+                <div className="relative mb-4" style={{ marginLeft: '10px', width: '314.726px' }}>
+                  {/* Bubble Container */}
+                  <div 
+                    style={{ 
+                      backgroundColor: '#EFEFEF',
+                      borderRadius: '20px',
+                      padding: '18px',
+                      position: 'relative'
+                    }}
+                  >
+                    {/* Text Content */}
+                    <p style={{
+                      fontFamily: "'Istok_Web:Regular', sans-serif",
+                      fontSize: '13.187px',
+                      lineHeight: '1.5',
+                      color: 'black',
+                      margin: '0',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
+                    }}>
+                      {message.text}
+                    </p>
                   </div>
-                  <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[13.187px] text-black top-[22.97px] left-[13.19px] right-[13.19px] whitespace-pre-wrap">
-                    {message.text}
-                  </p>
-                  <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[#a1a1a1] text-[8.791px] mt-2">
+                  
+                  {/* Time - below bubble, won't be affected */}
+                  <p style={{
+                    fontFamily: "'Istok_Web:Regular', sans-serif",
+                    fontSize: '8.791px',
+                    color: '#a1a1a1',
+                    marginTop: '8px',
+                    marginBottom: '0',
+                    paddingLeft: '18px'
+                  }}>
                     {message.time}
                   </p>
                 </div>
               ) : (
-                // User Message - positioned like Frame6
-                <div className="relative" style={{ marginLeft: '83.17px', width: '281.297px' }}>
-                  <div className="relative">
-                    <div className="flex items-center justify-center">
-                      <div className="-scale-y-100 flex-none rotate-180 w-full">
-                        <div className="min-h-[110.814px] relative w-full">
-                          <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 287.819 116.595">
-                            <path d={svgPaths.p5eeaa00} fill="var(--fill-0, #FEB05D)" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
+                // User Message - CSS bubble with auto height
+                <div className="relative mb-4" style={{ marginLeft: '83.17px', width: '281.297px' }}>
+                  {/* Bubble Container */}
+                  <div 
+                    style={{ 
+                      backgroundColor: '#FEB05D',
+                      borderRadius: '20px',
+                      padding: '18px',
+                      position: 'relative'
+                    }}
+                  >
+                    {/* Text Content */}
+                    <p style={{
+                      fontFamily: "'Istok_Web:Regular', sans-serif",
+                      fontSize: '12.786px',
+                      lineHeight: '1.5',
+                      color: 'black',
+                      margin: '0',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
+                    }}>
+                      {message.text}
+                    </p>
                   </div>
-                  <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic text-[12.786px] text-black top-[23.65px] left-[20px] right-[20px] whitespace-pre-wrap">
-                    {message.text}
+                  
+                  {/* Time - below bubble, right-aligned with margin */}
+                  <p style={{
+                    fontFamily: "'Istok_Web:Regular', sans-serif",
+                    fontSize: '8.791px',
+                    color: '#a1a1a1',
+                    marginTop: '8px',
+                    marginBottom: '0',
+                    marginRight: '2px',
+                    textAlign: 'right'
+                  }}>
+                    {message.time}
                   </p>
                 </div>
               )}

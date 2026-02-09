@@ -3,7 +3,7 @@ import svgPaths from "./svg-8blp8pu86r";
 function Frame() {
   return (
     <div className="absolute h-[10.168px] left-[11.41px] top-[25.28px] w-[47.734px]">
-      <p className="absolute font-['Itim:Regular',sans-serif] leading-[normal] left-[0.6px] not-italic text-[#2b2a2a] text-[7.061px] top-[0.84px]">JOYTHEOREM</p>
+      <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[0.6px] not-italic text-[#2b2a2a] text-[7.061px] top-[0.84px]">JOYTHEOREM</p>
       <div className="absolute h-[0.706px] left-[5.98px] top-[4.55px] w-0">
         <div className="absolute inset-[-30%_-0.21px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 0.423676 1.1298">
@@ -65,7 +65,7 @@ function Frame() {
 function Frame2() {
   return (
     <div className="absolute bg-[#f0817f] content-stretch flex flex-col items-center justify-center left-[54.63px] px-[4.892px] py-[1.631px] rounded-[6.93px] size-[13.861px] top-[1.63px]">
-      <p className="font-['Itim:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
+      <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative shrink-0 text-[8.474px] text-white">1</p>
     </div>
   );
 }

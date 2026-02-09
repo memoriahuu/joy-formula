@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { MessageCircle, FileText, Smile, BarChart3, Settings } from 'lucide-react';
+import { MessageCircle, FileText, Smile, BarChart3, Settings, X } from 'lucide-react';
 import HeatmapVector from '../imports/Vector';
 import JoyrepoTitle from '../imports/Joyrepo';
 import { cardsApi } from '../api';
-import type { JoyCard } from '../types';
+import { InlineJoyCard } from './InlineJoyCard';
+import type { JoyCard, JoyCardData } from '../types';
 import char5 from '../assets/formula characters/char5.svg';
 import char10 from '../assets/formula characters/char10.png';
 import char7 from '../assets/formula characters/char7.svg';
@@ -57,11 +58,20 @@ function CircularPuzzlePiece({ color, label, percentage, charImage }: PuzzlePiec
 // Formula Card Component
 interface FormulaCardProps {
   date: string;
+  scene?: string;
+  people?: string;
+  event?: string;
+  trigger?: string;
+  sensation?: string;
+  onClick?: () => void;
 }
 
-function FormulaCard({ date }: FormulaCardProps) {
+function FormulaCard({ date, scene, people, event, trigger, sensation, onClick }: FormulaCardProps) {
   return (
-    <div className="bg-white rounded-[16px] shadow-[0px_2px_8px_rgba(0,0,0,0.1)] p-5 mb-4 mx-4 relative">
+    <div 
+      onClick={onClick}
+      className="bg-white rounded-[16px] shadow-[0px_2px_8px_rgba(0,0,0,0.1)] p-5 mb-4 mx-4 relative cursor-pointer hover:shadow-[0px_4px_12px_rgba(0,0,0,0.15)] transition-shadow"
+    >
       <p className="absolute top-3 right-4 font-['Istok_Web:Regular',sans-serif] text-[11px] text-[#999]">{date}</p>
       
       <div className="flex justify-between items-start mt-6 px-2">
@@ -128,13 +138,25 @@ interface NewRepositoryPageProps {
 export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, onNavigateHome }: NewRepositoryPageProps) {
   const [cards, setCards] = useState<JoyCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCard, setSelectedCard] = useState<JoyCard | null>(null);
+  const [visibleCardCount, setVisibleCardCount] = useState(0);
 
   // 获取卡片列表
   useEffect(() => {
     const fetchCards = async () => {
       try {
         const response = await cardsApi.getCards(0, 20);
+        
+        // 首次进入此页面时，记录初始卡片数
+        if (!sessionStorage.getItem('repositoryInitialCardCount')) {
+          sessionStorage.setItem('repositoryInitialCardCount', String(response.cards.length));
+        }
+        
+        const initialCount = parseInt(sessionStorage.getItem('repositoryInitialCardCount') || '0', 10);
+        const newCardCount = Math.max(response.cards.length - initialCount, 0);
+        
         setCards(response.cards);
+        setVisibleCardCount(newCardCount);
       } catch (error) {
         console.error('Failed to fetch cards:', error);
       } finally {
@@ -143,6 +165,14 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
     };
 
     fetchCards();
+    
+    // 每 5 秒自动刷新一次卡片列表
+    const interval = setInterval(fetchCards, 5000);
+    
+    // 组件卸载时清除定时器
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -169,15 +199,21 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
               <div className="flex items-center justify-center h-32">
                 <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">Loading cards...</p>
               </div>
-            ) : cards.length === 0 ? (
+            ) : visibleCardCount === 0 ? (
               <div className="flex items-center justify-center h-32">
-                <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">No joy cards yet. Start chatting to create your first one!</p>
+                <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">No new joy cards yet. Start chatting to create your first one!</p>
               </div>
             ) : (
-              cards.map((card) => (
+              cards.slice(0, visibleCardCount).map((card) => (
                 <FormulaCard 
                   key={card.id} 
                   date={new Date(card.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  scene={card.formula_scene}
+                  people={card.formula_people}
+                  event={card.formula_event}
+                  trigger={card.formula_trigger}
+                  sensation={card.formula_sensation}
+                  onClick={() => setSelectedCard(card)}
                 />
               ))
             )}
@@ -191,6 +227,42 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
           onNavigateHome={onNavigateHome} 
         />
       </div>
+
+      {/* Expanded Card Modal */}
+      {selectedCard && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedCard(null)}
+        >
+          <div 
+            className="bg-white rounded-[20px] p-6 max-h-[90vh] overflow-y-auto"
+            style={{ width: '320px' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedCard(null)}
+              className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6 text-gray-600" />
+            </button>
+
+            {/* Display the full card content */}
+            <InlineJoyCard 
+              data={{
+                summary: selectedCard.card_summary,
+                formula: {
+                  scene: selectedCard.formula_scene,
+                  people: selectedCard.formula_people,
+                  event: selectedCard.formula_event,
+                  trigger: selectedCard.formula_trigger,
+                  sensation: selectedCard.formula_sensation,
+                }
+              } as JoyCardData}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

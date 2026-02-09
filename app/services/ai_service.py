@@ -70,29 +70,22 @@ class AIService:
                 return response.choices[0].message.content
 
             elif self.provider == "gemini":
-                from google.genai import types
-                contents = []
-                for msg in messages:
-                    role = "user" if msg["role"] == "user" else "model"
-                    contents.append(types.Content(role=role, parts=[types.Part(text=msg["content"])]))
-                response = self.client.models.generate_content(
-                    model=self.model,
-                    contents=contents,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_prompt,
+                import google.generativeai as genai
+                # 创建带 system_instruction 的模型实例
+                model = genai.GenerativeModel(self.model, system_instruction=system_prompt)
+                # 构建聊天历史（除最后一条）
+                chat_history = [{"role": "user" if msg["role"] == "user" else "model", "parts": [msg["content"]]} for msg in messages[:-1]]
+                # 启动聊天会话
+                chat = model.start_chat(history=chat_history)
+                # 发送最后一条用户消息
+                response = chat.send_message(
+                    messages[-1]["content"],
+                    generation_config=genai.GenerationConfig(
                         temperature=temperature,
                         max_output_tokens=max_tokens,
                     )
                 )
-                # response.text can be None for thinking models; extract from parts
-                if response.text is not None:
-                    return response.text
-                if response.candidates:
-                    parts = response.candidates[0].content.parts
-                    text_parts = [p.text for p in parts if p.text and not getattr(p, 'thought', False)]
-                    if text_parts:
-                        return "".join(text_parts)
-                raise ValueError("Gemini returned empty response")
+                return response.text
 
             elif self.provider == "custom":
                 # 自定义端点（Defy）

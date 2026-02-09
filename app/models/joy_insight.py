@@ -13,6 +13,8 @@ class JoyInsight(Base):
 
     # 定律内容
     insight_text = Column(Text, nullable=False)
+    statement = Column(Text)  # 定律陈述，如"在很多人面前公共演讲往往带来满足感"
+    keywords = Column(JSON)  # 关键词列表，如["课堂演讲", "发表观点", "多人场合"]
     pattern_type = Column(String)  # 模式分类标签
 
     # 证据（关联的卡片和引用）

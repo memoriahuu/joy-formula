@@ -22,10 +22,9 @@ class AIService:
             self.model = "gpt-4o"
 
         elif self.provider == "gemini":
-            import google.generativeai as genai
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            self.client = genai.GenerativeModel('gemini-2.5-flash-lite')
-            self.model = "gemini-2.5-flash-lite"
+            from google import genai
+            self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
+            self.model = "gemini-3-flash-preview"
 
         elif self.provider == "custom":
             # 用于 Defy 或其他自定义端点
@@ -70,14 +69,29 @@ class AIService:
                 return response.choices[0].message.content
 
             elif self.provider == "gemini":
-                # Gemini 处理
-                chat = self.client.start_chat(history=[])
-                # 将 system prompt 和消息合并
-                full_prompt = f"{system_prompt}\n\n"
+                from google.genai import types
+                contents = []
                 for msg in messages:
-                    full_prompt += f"{msg['role']}: {msg['content']}\n"
-                response = chat.send_message(full_prompt)
-                return response.text
+                    role = "user" if msg["role"] == "user" else "model"
+                    contents.append(types.Content(role=role, parts=[types.Part(text=msg["content"])]))
+                response = self.client.models.generate_content(
+                    model=self.model,
+                    contents=contents,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt,
+                        temperature=temperature,
+                        max_output_tokens=max_tokens,
+                    )
+                )
+                # response.text can be None for thinking models; extract from parts
+                if response.text is not None:
+                    return response.text
+                if response.candidates:
+                    parts = response.candidates[0].content.parts
+                    text_parts = [p.text for p in parts if p.text and not getattr(p, 'thought', False)]
+                    if text_parts:
+                        return "".join(text_parts)
+                raise ValueError("Gemini returned empty response")
 
             elif self.provider == "custom":
                 # 自定义端点（Defy）

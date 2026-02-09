@@ -9,7 +9,7 @@ anyio>=4.8.0
 # AI SDKs (根据需要安装)
 anthropic>=0.43.0
 openai>=1.60.0
-google-generativeai==0.8.3
+google-genai>=1.0.0
 
 # File upload
 python-multipart>=0.0.9

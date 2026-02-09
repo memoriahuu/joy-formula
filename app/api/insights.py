@@ -38,6 +38,8 @@ def generate_insights(
         insight = JoyInsight(
             user_id=user.id,
             insight_text=insight_data["insight"],
+            statement=insight_data.get("statement"),
+            keywords=insight_data.get("keywords"),
             pattern_type=insight_data.get("pattern_type"),
             evidence_cards=insight_data.get("evidence", [])
         )

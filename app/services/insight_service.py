@@ -60,12 +60,32 @@ class InsightService:
     @staticmethod
     def _extract_insights(ai_reply: str) -> List[Dict]:
         """从AI回复中提取定律JSON"""
-        json_match = re.search(r'```json\s*(\{.*?\})\s*```', ai_reply, re.DOTALL)
-        if not json_match:
+        if not ai_reply:
+            print("[DEBUG] AI reply is empty")
             return []
 
-        try:
-            data = json.loads(json_match.group(1))
-            return data.get("insights", [])
-        except json.JSONDecodeError:
-            return []
+
+        json_match = re.search(r'```json\s*(.*?)\s*```', ai_reply, re.DOTALL)
+        if json_match:
+            try:
+                data = json.loads(json_match.group(1))
+                print(f"[DEBUG] Parsed from code block, insights count: {len(data.get('insights', []))}")
+                return data.get("insights", [])
+            except json.JSONDecodeError as e:
+                print(f"[DEBUG] JSON decode failed (code block): {e}")
+                print(f"[DEBUG] Attempted to parse: {json_match.group(1)[:500]}")
+        else:
+            print("[DEBUG] No ```json code block found")
+
+        json_match = re.search(r'\{[\s\S]*"insights"[\s\S]*\}', ai_reply)
+        if json_match:
+            try:
+                data = json.loads(json_match.group(0))
+                print(f"[DEBUG] Parsed from raw JSON, insights count: {len(data.get('insights', []))}")
+                return data.get("insights", [])
+            except json.JSONDecodeError as e:
+                print(f"[DEBUG] JSON decode failed (raw): {e}")
+        else:
+            print("[DEBUG] No raw JSON with 'insights' found")
+
+        return []

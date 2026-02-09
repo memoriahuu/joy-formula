@@ -340,6 +340,8 @@ class JoyFormulaCLI:
                 insight = JoyInsight(
                     user_id=self.user.id,
                     insight_text=insight_data["insight"],
+                    statement=insight_data.get("statement"),
+                    keywords=insight_data.get("keywords"),
                     pattern_type=insight_data.get("pattern_type"),
                     evidence_cards=insight_data.get("evidence", [])
                 )
@@ -351,8 +353,15 @@ class JoyFormulaCLI:
 
             # 显示定律
             for idx, insight_data in enumerate(insights_data, 1):
+                statement_text = ""
+                if insight_data.get("statement"):
+                    statement_text = f"\n[italic]{insight_data['statement']}[/italic]"
+                keywords_text = ""
+                if insight_data.get("keywords"):
+                    keywords_text = f"\n[dim]Keywords: {', '.join(insight_data['keywords'])}[/dim]"
                 console.print(Panel(
-                    f"[bold]{insight_data['insight']}[/bold]\n\n"
+                    f"[bold]{insight_data['insight']}[/bold]"
+                    f"{statement_text}{keywords_text}\n\n"
                     f"[dim]{t('label_pattern_type')}: {insight_data.get('pattern_type', t('label_uncategorized'))}[/dim]",
                     title=t("insight_title", num=idx),
                     border_style="cyan"
@@ -430,8 +439,16 @@ class JoyFormulaCLI:
                     elif quote:
                         evidence_text += f"\n  • [dim]\"{quote}\"[/dim]"
 
+            statement_text = ""
+            if insight.statement:
+                statement_text = f"\n[italic]{insight.statement}[/italic]\n"
+            keywords_text = ""
+            if insight.keywords:
+                keywords_text = f"\n[dim]Keywords: {', '.join(insight.keywords)}[/dim]"
+
             console.print(Panel(
-                f"[bold]{insight.insight_text}[/bold]\n\n"
+                f"[bold]{insight.insight_text}[/bold]\n"
+                f"{statement_text}{keywords_text}\n"
                 f"[dim]{t('label_pattern_type')}: {insight.pattern_type or t('label_uncategorized')}[/dim]\n"
                 f"[dim]{t('col_generated_at')}: {insight.created_at.strftime('%Y-%m-%d %H:%M')}[/dim]"
                 f"{status}"

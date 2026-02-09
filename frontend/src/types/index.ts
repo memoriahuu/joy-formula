@@ -74,6 +74,8 @@ export interface JoyInsight {
   id: string;
   user_id: string;
   insight_text: string;
+  statement?: string;
+  keywords?: string[];
   pattern_type?: string;
   evidence_cards: string[];
   is_confirmed: boolean;

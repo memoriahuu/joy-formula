@@ -7,6 +7,8 @@ class JoyInsightResponse(BaseModel):
     id: str
     user_id: str
     insight_text: str
+    statement: Optional[str] = None
+    keywords: Optional[List[str]] = None
     pattern_type: Optional[str] = None
     evidence_cards: Optional[List[Dict]] = None
     is_confirmed: bool

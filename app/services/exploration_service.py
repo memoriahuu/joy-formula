@@ -26,7 +26,8 @@ class ExplorationService:
             推荐列表
         """
         # 构建数据
-        insights_data = [{"insight": i.insight_text, "type": i.pattern_type}
+        insights_data = [{"insight": i.insight_text, "statement": i.statement,
+                          "keywords": i.keywords, "type": i.pattern_type}
                          for i in insights if not i.is_rejected]
 
         cards_data = [{"summary": c.card_summary, "raw": c.raw_input}
@@ -54,12 +55,25 @@ class ExplorationService:
     @staticmethod
     def _extract_recommendations(ai_reply: str) -> List[Dict]:
         """从AI回复中提取推荐JSON"""
-        json_match = re.search(r'```json\s*(\{.*?\})\s*```', ai_reply, re.DOTALL)
-        if not json_match:
+        if not ai_reply:
             return []
 
-        try:
-            data = json.loads(json_match.group(1))
-            return data.get("recommendations", [])
-        except json.JSONDecodeError:
-            return []
+        # 尝试匹配 ```json ... ``` 代码块
+        json_match = re.search(r'```json\s*(.*?)\s*```', ai_reply, re.DOTALL)
+        if json_match:
+            try:
+                data = json.loads(json_match.group(1))
+                return data.get("recommendations", [])
+            except json.JSONDecodeError:
+                pass
+
+        # 回退：尝试直接找 JSON 对象
+        json_match = re.search(r'\{[\s\S]*"recommendations"[\s\S]*\}', ai_reply)
+        if json_match:
+            try:
+                data = json.loads(json_match.group(0))
+                return data.get("recommendations", [])
+            except json.JSONDecodeError:
+                pass
+
+        return []

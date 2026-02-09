@@ -35,3 +35,11 @@ def init_db():
             with engine.connect() as conn:
                 conn.execute(text("ALTER TABLE users ADD COLUMN language VARCHAR DEFAULT 'en'"))
                 conn.commit()
+
+        insight_columns = [c["name"] for c in insp.get_columns("joy_insights")]
+        with engine.connect() as conn:
+            if "statement" not in insight_columns:
+                conn.execute(text("ALTER TABLE joy_insights ADD COLUMN statement TEXT"))
+            if "keywords" not in insight_columns:
+                conn.execute(text("ALTER TABLE joy_insights ADD COLUMN keywords JSON"))
+            conn.commit()

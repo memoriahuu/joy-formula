@@ -22,15 +22,15 @@ export function InlineJoyCard({ data, onRegenerate, onSubmit }: InlineJoyCardPro
       displayLabel: 'People',
       value: formula.people 
     },
-    { 
-      label: 'action', 
-      displayLabel: 'Action',
-      value: formula.event 
+    {
+      label: 'event',
+      displayLabel: 'Event',
+      value: formula.event
     },
-    { 
-      label: 'drive', 
+    {
+      label: 'drive',
       displayLabel: 'Drive',
-      value: formula.trigger 
+      value: formula.trigger
     },
     { 
       label: 'sense', 

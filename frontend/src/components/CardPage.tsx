@@ -355,7 +355,7 @@ function Frame17() {
       className="absolute bg-[#bdd3db] h-[160px] left-[324px] overflow-clip rounded-[24px] top-[227px] w-[123px] hover:scale-105 transition-transform cursor-pointer"
     >
       <p className="absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[68px] not-italic text-[#4190ae] text-[24px] top-[22px]">12%</p>
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[9px] not-italic text-[#4190ae] text-[24px] top-[67px]">Trigger</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[9px] not-italic text-[#4190ae] text-[24px] top-[67px]">Drive</p>
       <div className="absolute flex h-[70.431px] items-center justify-center left-[38px] top-[91px] w-[86.159px]" style={{ "--transform-inner-width": "1184.65625", "--transform-inner-height": "154" } as React.CSSProperties}>
         <div className="flex-none rotate-[179.27deg]">
           <Frame12 />
@@ -445,7 +445,7 @@ function Frame24() {
       className="absolute bg-[#ddc6ed] h-[160px] left-[258px] overflow-clip rounded-[24px] top-[399px] w-[190px] hover:scale-105 transition-transform cursor-pointer"
     >
       <p className="absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[17px] not-italic text-[#8b679d] text-[24px] top-[13px]">36%</p>
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[17px] not-italic text-[#8b679d] text-[24px] top-[37px]">Drive</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[17px] not-italic text-[#8b679d] text-[24px] top-[37px]">Event</p>
       <Frame13 />
     </motion.div>
   );

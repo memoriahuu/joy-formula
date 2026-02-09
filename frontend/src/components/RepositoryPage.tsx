@@ -69,7 +69,7 @@ interface RepositoryPageProps {
 export default function RepositoryPage({ onNavigateTheorem, onNavigateCard, onNavigateHome, onNavigateChat }: RepositoryPageProps) {
   const emotions = [
     { name: 'Scene', color: '#AB86F6', percentage: '36%', top: 74, left: 34, charImage: char5 },
-    { name: 'Driver', color: '#FFA2A2', percentage: '36%', top: 71, left: 111, charImage: char10 },
+    { name: 'Event', color: '#FFA2A2', percentage: '36%', top: 71, left: 111, charImage: char10 },
     { name: 'People', color: '#FFC16C', percentage: '10%', top: 94, left: 204, charImage: char7 },
     { name: 'Senses', color: '#A9D66A', percentage: '36%', top: 157, left: 282, charImage: char8 },
     { name: 'Trigger', color: '#CCCCCC', percentage: '12%', top: 157, left: 282, charImage: char6 }

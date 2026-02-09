@@ -76,10 +76,10 @@ function FormulaCard({ date, scene, people, event, trigger, sensation, onClick }
       
       <div className="flex justify-between items-start mt-6 px-2">
         <CircularPuzzlePiece color="#8B9EFF" label="Scene" percentage="" charImage={char10} />
-        <CircularPuzzlePiece color="#FFB3C1" label="Drive" percentage="" charImage={char5} />
+        <CircularPuzzlePiece color="#FFB3C1" label="Event" percentage="" charImage={char5} />
         <CircularPuzzlePiece color="#FFB366" label="People" percentage="" charImage={char8} />
         <CircularPuzzlePiece color="#B8E986" label="Senses" percentage="" charImage={char7} />
-        <CircularPuzzlePiece color="#D4D4D4" label="Trigger" percentage="" charImage={char6} />
+        <CircularPuzzlePiece color="#D4D4D4" label="Drive" percentage="" charImage={char6} />
       </div>
     </div>
   );
@@ -139,24 +139,13 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
   const [cards, setCards] = useState<JoyCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCard, setSelectedCard] = useState<JoyCard | null>(null);
-  const [visibleCardCount, setVisibleCardCount] = useState(0);
 
   // 获取卡片列表
   useEffect(() => {
     const fetchCards = async () => {
       try {
         const response = await cardsApi.getCards(0, 20);
-        
-        // 首次进入此页面时，记录初始卡片数
-        if (!sessionStorage.getItem('repositoryInitialCardCount')) {
-          sessionStorage.setItem('repositoryInitialCardCount', String(response.cards.length));
-        }
-        
-        const initialCount = parseInt(sessionStorage.getItem('repositoryInitialCardCount') || '0', 10);
-        const newCardCount = Math.max(response.cards.length - initialCount, 0);
-        
         setCards(response.cards);
-        setVisibleCardCount(newCardCount);
       } catch (error) {
         console.error('Failed to fetch cards:', error);
       } finally {
@@ -165,10 +154,10 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
     };
 
     fetchCards();
-    
+
     // 每 5 秒自动刷新一次卡片列表
     const interval = setInterval(fetchCards, 5000);
-    
+
     // 组件卸载时清除定时器
     return () => {
       clearInterval(interval);
@@ -199,12 +188,12 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
               <div className="flex items-center justify-center h-32">
                 <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">Loading cards...</p>
               </div>
-            ) : visibleCardCount === 0 ? (
+            ) : cards.length === 0 ? (
               <div className="flex items-center justify-center h-32">
                 <p className="font-['Istok_Web:Regular',sans-serif] text-[14px] text-[#999]">No new joy cards yet. Start chatting to create your first one!</p>
               </div>
             ) : (
-              cards.slice(0, visibleCardCount).map((card) => (
+              cards.map((card) => (
                 <FormulaCard 
                   key={card.id} 
                   date={new Date(card.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}

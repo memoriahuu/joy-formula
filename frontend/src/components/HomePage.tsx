@@ -250,7 +250,7 @@ function Frame14({ summary, selectedCard, joyCard, onClose }: { summary?: string
       content: joyCard?.formula_people || 'Just me, enjoying my own company',
     },
     trigger: {
-      title: 'Trigger',
+      title: 'Drive',
       color: '#4190ae',
       content: joyCard?.formula_trigger || 'The warm afternoon sunlight streaming through the window',
     },
@@ -493,7 +493,7 @@ function Frame12({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.3, duration: 0.5 }}
       className="absolute bg-[#bdd3db] h-[130.456px] left-[264.17px] overflow-clip rounded-[19.568px] top-[185.09px] w-[100.288px] cursor-pointer"
     >
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[6.83px] not-italic text-[#4190ae] text-[19.568px] top-[45.92px]">Trigger</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[6.83px] not-italic text-[#4190ae] text-[19.568px] top-[45.92px]">Drive</p>
       <div className="absolute flex h-[57.426px] items-center justify-center left-[30.98px] top-[74.2px] w-[70.25px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "153.5" } as React.CSSProperties}>
         <div className="flex-none rotate-[179.27deg]">
           <Frame6 />
@@ -587,7 +587,7 @@ function Frame20({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.5, duration: 0.5 }}
       className="absolute bg-[#ddc6ed] h-[130.456px] left-[210.36px] overflow-clip rounded-[19.568px] top-[325.33px] w-[154.917px] cursor-pointer"
     >
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[13.86px] not-italic text-[#8b679d] text-[19.568px] top-[10.6px]">Drive</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[13.86px] not-italic text-[#8b679d] text-[19.568px] top-[10.6px]">Event</p>
       <Frame7 />
     </motion.button>
   );
@@ -649,7 +649,7 @@ function CardModal({ cardType, onClose, joyCard }: { cardType: CardType; onClose
       )
     },
     trigger: {
-      title: 'Trigger',
+      title: 'Drive',
       color: '#4190ae',
       backgroundColor: '#bdd3db',
       percentage: '12%',

@@ -17,7 +17,7 @@ export function JoyCard({ data, onClose, onRegenerate, onSubmit, cardId }: JoyCa
     { label: 'Scene', value: formula.scene, icon: '🏞️', color: 'bg-blue-50 text-blue-700' },
     { label: 'People', value: formula.people, icon: '👥', color: 'bg-green-50 text-green-700' },
     { label: 'Event', value: formula.event, icon: '✨', color: 'bg-purple-50 text-purple-700' },
-    { label: 'Trigger', value: formula.trigger, icon: '🎯', color: 'bg-orange-50 text-orange-700' },
+    { label: 'Drive', value: formula.trigger, icon: '🎯', color: 'bg-orange-50 text-orange-700' },
     { label: 'Sensation', value: formula.sensation, icon: '💫', color: 'bg-pink-50 text-pink-700' },
   ].filter(item => item.value);
 

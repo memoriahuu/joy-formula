@@ -35,7 +35,7 @@ class ChatService:
         # 调用AI
         lang = get_language()
         ai_reply = ai_service.chat(
-            system_prompt=JOY_COACH_SYSTEM_PROMPT["en"],
+            system_prompt=JOY_COACH_SYSTEM_PROMPT[lang],
             messages=messages,
             temperature=0.7
         )

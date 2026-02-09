@@ -4,6 +4,11 @@ import HeatmapVector from '../imports/Vector';
 import JoyrepoTitle from '../imports/Joyrepo';
 import { cardsApi } from '../api';
 import type { JoyCard } from '../types';
+import char5 from '../assets/formula characters/char5.svg';
+import char10 from '../assets/formula characters/char10.png';
+import char7 from '../assets/formula characters/char7.svg';
+import char8 from '../assets/formula characters/char8.svg';
+import char6 from '../assets/formula characters/char6.svg';
 
 //repopage, showing calendar and emotion cards, with nav bar at the bottom to switch between pages
 // Circular puzzle piece component
@@ -11,28 +16,39 @@ interface PuzzlePieceProps {
   color: string;
   label: string;
   percentage: string;
+  charImage?: string;
 }
 
-function CircularPuzzlePiece({ color, label, percentage }: PuzzlePieceProps) {
+function CircularPuzzlePiece({ color, label, percentage, charImage }: PuzzlePieceProps) {
   return (
     <div className="flex flex-col items-center gap-1">
-      <div 
-        className="w-[50px] h-[50px] rounded-full border-2 border-black relative"
-        style={{ backgroundColor: color }}
-      >
-        {/* Puzzle notch at top */}
-        <div 
-          className="absolute -top-[6px] left-1/2 -translate-x-1/2 w-[12px] h-[12px] rounded-full border-2 border-black bg-white"
-        />
-        {/* Puzzle notch at bottom */}
-        <div 
-          className="absolute -bottom-[6px] left-1/2 -translate-x-1/2 w-[12px] h-[12px] rounded-full"
-          style={{ backgroundColor: color, border: '2px solid black' }}
-        />
+      <div className="w-[100px] h-[100px] flex items-center justify-center">
+        {charImage ? (
+          <img 
+            src={charImage} 
+            alt={label}
+            className="max-w-full max-h-full object-contain"
+          />
+        ) : (
+          <div 
+            className="w-[50px] h-[50px] rounded-full border-2 border-black relative"
+            style={{ backgroundColor: color }}
+          >
+            {/* Puzzle notch at top */}
+            <div 
+              className="absolute -top-[6px] left-1/2 -translate-x-1/2 w-[12px] h-[12px] rounded-full border-2 border-black bg-white"
+            />
+            {/* Puzzle notch at bottom */}
+            <div 
+              className="absolute -bottom-[6px] left-1/2 -translate-x-1/2 w-[12px] h-[12px] rounded-full"
+              style={{ backgroundColor: color, border: '2px solid black' }}
+            />
+          </div>
+        )}
       </div>
       <div className="text-center">
         <p className="font-['Istok_Web:Bold',sans-serif] text-[10px] text-black">{label}</p>
-        <p className="font-['Istok_Web:Regular',sans-serif] text-[8px] text-black">{percentage}</p>
+        {percentage && <p className="font-['Istok_Web:Regular',sans-serif] text-[8px] text-black">{percentage}</p>}
       </div>
     </div>
   );
@@ -49,11 +65,11 @@ function FormulaCard({ date }: FormulaCardProps) {
       <p className="absolute top-3 right-4 font-['Istok_Web:Regular',sans-serif] text-[11px] text-[#999]">{date}</p>
       
       <div className="flex justify-between items-start mt-6 px-2">
-        <CircularPuzzlePiece color="#8B9EFF" label="Scene" percentage="36%" />
-        <CircularPuzzlePiece color="#FFB3C1" label="Driver" percentage="36%" />
-        <CircularPuzzlePiece color="#FFB366" label="People" percentage="10%" />
-        <CircularPuzzlePiece color="#B8E986" label="Senses" percentage="36%" />
-        <CircularPuzzlePiece color="#D4D4D4" label="Trigger" percentage="12%" />
+        <CircularPuzzlePiece color="#8B9EFF" label="Scene" percentage="" charImage={char10} />
+        <CircularPuzzlePiece color="#FFB3C1" label="Drive" percentage="" charImage={char5} />
+        <CircularPuzzlePiece color="#FFB366" label="People" percentage="" charImage={char8} />
+        <CircularPuzzlePiece color="#B8E986" label="Senses" percentage="" charImage={char7} />
+        <CircularPuzzlePiece color="#D4D4D4" label="Trigger" percentage="" charImage={char6} />
       </div>
     </div>
   );
@@ -102,14 +118,6 @@ function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: Bottom
   );
 }
 
-// Scroll indicator on the right
-function ScrollIndicator() {
-  return (
-    <div className="fixed right-1 top-1/2 -translate-y-1/2 w-[6px] h-[80px] bg-gray-300 rounded-full z-40">
-      <div className="w-full h-[30px] bg-gray-500 rounded-full" />
-    </div>
-  );
-}
 
 interface NewRepositoryPageProps {
   onNavigateChat: () => void;
@@ -138,23 +146,24 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
   }, []);
 
   return (
-    <div className="relative w-[393px] h-[852px] bg-[#f5f5f5] rounded-[40px] overflow-hidden shadow-2xl">
-      {/* Main content area with white background and rounded corners */}
-      <div className="absolute inset-4 bg-white rounded-[32px] overflow-hidden">
+    <div className="relative w-[393px] h-[852px] bg-[#f5f5f5] overflow-hidden">
+      {/* Main content area with white background */}
+      <div className="absolute inset-4 bg-white overflow-hidden flex flex-col">
         
-        {/* Header Area - Fixed */}
-        <div className="fixed top-4 left-4 right-4 bg-white z-20 pt-6 pb-4 rounded-t-[32px]">
-          {/* JOYREPO Title with imported component */}
-          <div className="h-[48.921px] w-[173.67px] mx-auto mb-4 relative">
-            <JoyrepoTitle />
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Header Area - Part of scrollable content */}
+          <div className="bg-white pt-6 pb-4">
+            {/* JOYREPO Title with imported component */}
+            <div className="h-[48.921px] w-[173.67px] mx-auto mb-4 relative">
+              <JoyrepoTitle />
+            </div>
+
+            {/* Heatmap below tabs */}
+            <Heatmap />
           </div>
 
-          {/* Heatmap below tabs */}
-          <Heatmap />
-        </div>
-
-        {/* Content Area - Scrollable */}
-        <div className="absolute top-[260px] left-0 right-0 bottom-[84px] overflow-y-auto">
+          {/* Content Area - Scrollable with header */}
           <div className="pt-4 pb-6">
             {isLoading ? (
               <div className="flex items-center justify-center h-32">
@@ -174,9 +183,6 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
             )}
           </div>
         </div>
-
-        {/* Scroll Indicator */}
-        <ScrollIndicator />
 
         {/* Bottom Navigation */}
         <BottomNav 

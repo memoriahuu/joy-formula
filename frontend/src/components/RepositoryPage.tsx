@@ -2,6 +2,11 @@ import { motion } from 'motion/react';
 import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-yf3nbfz6ej";
 import joyRepoTitle from "../assets/joyrepo.png";
+import char5 from "../assets/formula characters/char5.svg";
+import char10 from "../assets/formula characters/char10.png";
+import char7 from "../assets/formula characters/char7.svg";
+import char8 from "../assets/formula characters/char8.svg";
+import char6 from "../assets/formula characters/char6.svg";
 
 //overall repo page, showing calendar and emotion cards, with nav bar at the bottom to switch between pages
 
@@ -63,10 +68,11 @@ interface RepositoryPageProps {
 
 export default function RepositoryPage({ onNavigateTheorem, onNavigateCard, onNavigateHome, onNavigateChat }: RepositoryPageProps) {
   const emotions = [
-    { name: 'Gym', color: '#AB86F6', percentage: '9%', top: 74, left: 34 },
-    { name: 'Watermelon', color: '#FFA2A2', percentage: '3%', top: 71, left: 111 },
-    { name: 'Calm', color: '#FFC16C', percentage: '3%', top: 94, left: 204 },
-    { name: 'Mint', color: '#A9D66A', percentage: '2%', top: 157, left: 282 }
+    { name: 'Scene', color: '#AB86F6', percentage: '36%', top: 74, left: 34, charImage: char5 },
+    { name: 'Driver', color: '#FFA2A2', percentage: '36%', top: 71, left: 111, charImage: char10 },
+    { name: 'People', color: '#FFC16C', percentage: '10%', top: 94, left: 204, charImage: char7 },
+    { name: 'Senses', color: '#A9D66A', percentage: '36%', top: 157, left: 282, charImage: char8 },
+    { name: 'Trigger', color: '#CCCCCC', percentage: '12%', top: 157, left: 282, charImage: char6 }
   ];
 
   return (
@@ -129,11 +135,12 @@ export default function RepositoryPage({ onNavigateTheorem, onNavigateCard, onNa
           <div className="flex items-center justify-between gap-[12px]">
             {emotions.map((emotion, idx) => (
               <div key={idx} className="flex flex-col items-center relative">
-                <div
-                  className="w-[60px] h-[60px] rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: emotion.color }}
-                >
-                  <span className="text-[24px]">😊</span>
+                <div className="w-[80px] h-[80px] flex items-center justify-center">
+                  <img 
+                    src={emotion.charImage} 
+                    alt={emotion.name}
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
                 <p className="text-[10px] font-['Itim:Regular',sans-serif] text-black mt-1">
                   {emotion.name}
@@ -162,11 +169,12 @@ export default function RepositoryPage({ onNavigateTheorem, onNavigateCard, onNa
           <div className="flex items-center justify-between gap-[12px]">
             {emotions.map((emotion, idx) => (
               <div key={idx} className="flex flex-col items-center relative opacity-50">
-                <div
-                  className="w-[60px] h-[60px] rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: emotion.color }}
-                >
-                  <span className="text-[24px]">😊</span>
+                <div className="w-[80px] h-[80px] flex items-center justify-center">
+                  <img 
+                    src={emotion.charImage} 
+                    alt={emotion.name}
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
                 <p className="text-[10px] font-['Itim:Regular',sans-serif] text-black mt-1">
                   {emotion.name}

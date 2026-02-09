@@ -61,26 +61,6 @@ function Info({ isActive }: { isActive: boolean }) {
   );
 }
 
-function Settings() {
-  return (
-    <div className="h-[30px] relative shrink-0 w-[30.652px]" data-name="Settings">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 30.6522 30">
-        <g clipPath="url(#clip0_1_1220)" id="Settings">
-          <g id="Icon">
-            <path d={svgPaths.p2be29800} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.6087" />
-            <path d={svgPaths.p3575c080} stroke="var(--stroke-0, #4B4B4B)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.6087" />
-          </g>
-        </g>
-        <defs>
-          <clipPath id="clip0_1_1220">
-            <rect fill="white" height="30" width="30.6522" />
-          </clipPath>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
 interface FooterNavProps {
   activePage: 'chat' | 'home';
   onNavigateChat: () => void;
@@ -112,11 +92,6 @@ export default function FooterNav({ activePage, onNavigateChat, onNavigateHome }
         >
           <Info isActive={activePage === 'chat'} />
         </button>
-
-        {/* Settings - Fourth */}
-        <div className="content-stretch flex flex-col items-center relative shrink-0 w-[40px] opacity-70">
-          <Settings />
-        </div>
       </div>
     </div>
   );

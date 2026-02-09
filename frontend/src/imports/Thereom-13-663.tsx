@@ -414,7 +414,6 @@ function Frame7() {
         <img alt="" className="absolute inset-0 max-w-none object-cover opacity-70 pointer-events-none size-full" src={imgHappy19496721} />
       </div>
       <BarChart />
-      <Settings />
     </div>
   );
 }

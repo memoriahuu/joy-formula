@@ -185,7 +185,7 @@ function GiftBox({ onNavigateGiftBox }: { onNavigateGiftBox?: () => void }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
         className="absolute h-[73.382px] w-[103.332px] cursor-pointer"
-        style={{ left: "210px", top: "700px" }}
+        style={{ left: "210px", top: "695px" }}
     >
       {/* Shadow ellipses */}
       <div className="absolute h-[73.382px] left-0 top-0 w-[103.332px]">
@@ -399,7 +399,6 @@ function Frame10({ onClick }: { onClick: () => void }) {
       className="absolute bg-[#cad4ef] h-[130.456px] left-[35.88px] overflow-clip rounded-[19.568px] top-[185.09px] w-[123.934px] cursor-pointer"
     >
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[13.86px] not-italic text-[#5a7acd] text-[19.568px] top-[8.15px] w-[53.813px] whitespace-pre-wrap">Scene</p>
-      <p className="-translate-x-full absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[115.78px] not-italic text-[#5a7acd] text-[19.568px] text-right top-[63.6px] w-[53.813px] whitespace-pre-wrap">36%</p>
       <Frame9 />
     </motion.button>
   );
@@ -444,7 +443,6 @@ function Frame11({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.2, duration: 0.5 }}
       className="absolute bg-[#ffcece] h-[130.456px] left-[169.59px] overflow-clip rounded-[19.568px] top-[185.09px] w-[84.797px] cursor-pointer"
     >
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[40.77px] not-italic text-[#f98080] text-[19.568px] top-[50.55px]">10%</p>
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[18.75px] not-italic text-[#f98080] text-[19.568px] top-[24.46px]">People</p>
       <div className="absolute flex h-[67.009px] items-center justify-center left-[5.71px] top-[74.2px] w-[72.838px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "153.5" } as React.CSSProperties}>
         <div className="-scale-y-100 flex-none rotate-[-0.87deg]">
@@ -494,7 +492,6 @@ function Frame12({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.3, duration: 0.5 }}
       className="absolute bg-[#bdd3db] h-[130.456px] left-[264.17px] overflow-clip rounded-[19.568px] top-[185.09px] w-[100.288px] cursor-pointer"
     >
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[55.44px] not-italic text-[#4190ae] text-[19.568px] top-[17.94px]">12%</p>
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[6.83px] not-italic text-[#4190ae] text-[19.568px] top-[45.92px]">Trigger</p>
       <div className="absolute flex h-[57.426px] items-center justify-center left-[30.98px] top-[74.2px] w-[70.25px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "153.5" } as React.CSSProperties}>
         <div className="flex-none rotate-[179.27deg]">
@@ -544,7 +541,6 @@ function Frame13({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.4, duration: 0.5 }}
       className="absolute bg-[#ffd6aa] h-[130.456px] left-[35.88px] overflow-clip rounded-[19.568px] top-[325.33px] w-[164.701px] cursor-pointer"
     >
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[111.7px] not-italic text-[#ec871b] text-[19.568px] top-[96.21px]">36%</p>
       <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[89.69px] not-italic text-[#ec871b] text-[19.568px] top-[73.38px]">Senses</p>
       <Frame3 />
     </motion.button>
@@ -590,7 +586,7 @@ function Frame20({ onClick }: { onClick: () => void }) {
       transition={{ delay: 0.5, duration: 0.5 }}
       className="absolute bg-[#ddc6ed] h-[130.456px] left-[210.36px] overflow-clip rounded-[19.568px] top-[325.33px] w-[154.917px] cursor-pointer"
     >
-      <p className="absolute font-['Istok_Web:Bold',sans-serif] leading-[normal] left-[13.86px] not-italic text-[#8b679d] text-[19.568px] top-[10.6px]">36%</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[13.86px] not-italic text-[#8b679d] text-[19.568px] top-[10.6px]">Drive</p>
       <Frame7 />
     </motion.button>
   );
@@ -885,7 +881,7 @@ export default function HomePage({ onNavigateChat, onNavigateTheorem, onNavigate
       <Frame13 onClick={() => setSelectedCard('senses')} />
       <Frame20 onClick={() => setSelectedCard('feeling')} />
       
-      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[256.02px] not-italic text-[8.154px] text-black top-[163.89px] w-[107.627px] whitespace-pre-wrap">This is your 96th JoyFormula.</p>
+      <p className="absolute font-['Istok_Web:Regular',sans-serif] leading-[normal] left-[256.02px] not-italic text-[8.154px] text-black top-[163.89px] w-[140px] whitespace-pre-wrap">This is your 96th JoyFormula.</p>
       
       {/* Theorem Card and Gift Box */}
       <TheoremCard onNavigateTheoremEdit={onNavigateTheoremEdit} />

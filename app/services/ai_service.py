@@ -22,9 +22,10 @@ class AIService:
             self.model = "gpt-4o"
 
         elif self.provider == "gemini":
-            from google import genai
-            self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
-            self.model = "gemini-3-flash-preview"
+            import google.generativeai as genai
+            genai.configure(api_key=settings.GEMINI_API_KEY)
+            self.client = genai.GenerativeModel('gemini-2.5-flash-preview-09-2025')
+            self.model = "gemini-2.5-flash-preview-09-2025"
 
         elif self.provider == "custom":
             # 用于 Defy 或其他自定义端点

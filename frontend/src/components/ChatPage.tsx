@@ -5,7 +5,7 @@ import svgPaths from "../imports/svg-q9e9i9q3px";
 import imgImage5 from "figma:asset/5e23b583e6ceb3250bf5714b464a5fc90e5eba62.png";
 import { chatApi } from '../api';
 import type { JoyCardData } from '../types';
-import { JoyCard } from './JoyCard';
+import { InlineJoyCard } from './InlineJoyCard';
 
 interface Message {
   type: 'ai' | 'user';
@@ -222,7 +222,6 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
-  const [activeCard, setActiveCard] = useState<JoyCardData | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -285,10 +284,9 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // 如果对话完成并生成了卡片，显示卡片模态框
+      // 卡片已经在消息中显示，不需要额外处理
       if (response.is_complete && response.card) {
         console.log('Joy card generated:', response.card);
-        setActiveCard(response.card);
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -302,6 +300,33 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // 处理卡片重新生成
+  const handleRegenerateCard = async () => {
+    try {
+      // 开始新的对话会话
+      const response = await chatApi.startChat();
+      setSessionId(response.session_id);
+      
+      // 添加新的初始消息，保留历史记录
+      const newAiMessage: Message = {
+        type: 'ai',
+        text: response.initial_message,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setMessages(prev => [...prev, newAiMessage]);
+      
+      console.log('Started new chat session for regeneration');
+    } catch (error) {
+      console.error('Failed to regenerate:', error);
+    }
+  };
+
+  // 处理卡片提交
+  const handleSubmitCard = () => {
+    // 跳转到主页
+    onNavigateHome();
   };
 
   return (
@@ -358,6 +383,17 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
                   }}>
                     {message.time}
                   </p>
+
+                  {/* Inline Joy Card */}
+                  {message.card && (
+                    <div style={{ marginTop: '12px' }}>
+                      <InlineJoyCard 
+                        data={message.card}
+                        onSubmit={handleSubmitCard}
+                        onRegenerate={handleRegenerateCard}
+                      />
+                    </div>
+                  )}
                 </div>
               ) : (
                 // User Message - CSS bubble with auto height
@@ -407,13 +443,6 @@ export default function ChatPage({ onNavigateHome, onNavigateTheorem, onNavigate
 
       <InputBar onSubmit={handleSubmit} />
       <Component1 onNavigateHome={onNavigateHome} onNavigateTheorem={onNavigateTheorem} onNavigateRepository={onNavigateRepository} />
-
-      {/* JoyCard Modal - rendered at root level for proper centering */}
-      <AnimatePresence>
-        {activeCard && (
-          <JoyCard data={activeCard} onClose={() => setActiveCard(null)} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

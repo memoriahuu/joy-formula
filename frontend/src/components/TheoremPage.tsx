@@ -7,7 +7,16 @@ import type { JoyInsight, JoyCard } from '../types';
 
 //theorem page with card decks
 
-function Frame9({ summary }: { summary?: string | null }) {
+function Frame9({ insight }: { insight?: JoyInsight }) {
+  if (!insight) return null;
+  
+  const displayText = insight.statement || insight.insight_text;
+  const date = new Date(insight.created_at).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+  
   return (
     <div className="absolute h-[251.21px] left-[47.5px] top-[299.53px] w-[297.695px]">
       <div className="absolute flex h-[251.21px] items-center justify-center left-0 top-0 w-[297.695px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "0" } as React.CSSProperties}>
@@ -18,13 +27,13 @@ function Frame9({ summary }: { summary?: string | null }) {
       <div className="absolute flex h-[117.992px] items-center justify-center left-[42.34px] top-[71.85px] w-[210.887px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
         <div className="flex-none rotate-[11.48deg]">
           <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative text-[#3a3a3a] text-[16.307px] w-[198.946px] whitespace-pre-wrap">
-            "{summary || "A quiet room, a golden beam, a heart at rest. Today, the light reminded me that I am enough."}"
+            "{displayText}"
           </p>
         </div>
       </div>
       <div className="absolute flex h-[32.965px] items-center justify-center left-[58.62px] top-[43.94px] w-[79.042px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "19" } as React.CSSProperties}>
         <div className="flex-none rotate-[11.48deg]">
-          <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative text-[#695d52] text-[12.23px]">Feb 6th, 2026</p>
+          <p className="font-['Istok_Web:Regular',sans-serif] leading-[normal] not-italic relative text-[#695d52] text-[12.23px]">{date}</p>
         </div>
       </div>
     </div>
@@ -462,15 +471,18 @@ interface TheoremPageProps {
   onNavigateHome: () => void;
   onNavigateRepository: () => void;
   onEditInsight?: (insight: JoyInsight) => void;
+  onNavigateTheoremEdit?: () => void;
 }
 
-export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigateRepository, onEditInsight }: TheoremPageProps) {
+export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigateRepository, onEditInsight, onNavigateTheoremEdit }: TheoremPageProps) {
   const [insights, setInsights] = useState<JoyInsight[]>([]);
+  const [confirmedInsights, setConfirmedInsights] = useState<JoyInsight[]>([]);
   const [latestCard, setLatestCard] = useState<JoyCard | null>(null);
+  const [totalCards, setTotalCards] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // 获取最新的JoyCard
+  // 获取最新的JoyCard和总数
   useEffect(() => {
     const loadLatestCard = async () => {
       try {
@@ -478,6 +490,7 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
         if (response.cards && response.cards.length > 0) {
           setLatestCard(response.cards[0]);
         }
+        setTotalCards(response.total || 0);
       } catch (error) {
         console.error('Failed to load latest card:', error);
       }
@@ -492,6 +505,9 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
       try {
         const data = await insightsApi.getInsights();
         setInsights(data);
+        // 过滤出已确认的定律
+        const confirmed = data.filter(item => item.is_confirmed && !item.is_rejected);
+        setConfirmedInsights(confirmed);
       } catch (error) {
         console.error('Failed to fetch insights:', error);
       } finally {
@@ -520,7 +536,7 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
 
   return (
     <div className="bg-white relative size-full" data-name="Thereom">
-      <Frame9 summary={latestCard?.card_summary} />
+      {confirmedInsights.length > 0 && <Frame9 insight={confirmedInsights[0]} />}
       <Frame8 />
       <div className="absolute flex h-[388.465px] items-center justify-center left-[138.5px] top-[64.53px] w-[386.334px]" style={{ "--transform-inner-width": "1200", "--transform-inner-height": "959" } as React.CSSProperties}>
         <div className="flex-none rotate-[-48.45deg]">
@@ -533,6 +549,69 @@ export default function TheoremPage({ onNavigateChat, onNavigateHome, onNavigate
         </div>
       </div>
       <Frame10 />
+      
+      {/* 暗色背景遮罩 */}
+      {(isLoading || insights.length === 0 || insights.length > 0) && (
+        <div className="absolute inset-0 bg-black/40 z-10" style={{ top: 0, bottom: 0 }} />
+      )}
+      
+      {/* 中心状态卡片 */}
+      <div className="absolute inset-0 flex items-center justify-center px-8 pointer-events-none z-20" style={{ top: '100px', bottom: '150px' }}>
+        <div className="bg-white rounded-lg shadow-2xl p-10 py-14 max-w-sm w-full pointer-events-auto min-h-[350px] flex flex-col justify-center">
+          {isLoading ? (
+            <div className="text-center">
+              <p className="text-gray-600 font-['Istok_Web:Regular',sans-serif] text-lg">Loading...</p>
+            </div>
+          ) : insights.length === 0 ? (
+            <div className="text-center space-y-6">
+              <div className="space-y-3">
+                <p className="text-2xl font-['Itim:Regular',sans-serif] text-[#2b2a2a]">No Theorem Yet</p>
+                <p className="text-gray-600 font-['Istok_Web:Regular',sans-serif]">
+                  Start chatting to generate your personalized joy theorem!
+                </p>
+                {totalCards < 5 && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <p className="text-sm text-gray-500 font-['Istok_Web:Regular',sans-serif]">
+                      You have <span className="font-semibold text-[#FEB05D]">{totalCards}</span> {totalCards === 1 ? 'card' : 'cards'}
+                    </p>
+                    <p className="text-sm text-gray-500 font-['Istok_Web:Regular',sans-serif] mt-1">
+                      Need <span className="font-semibold text-[#FEB05D]">{5 - totalCards}</span> more {(5 - totalCards) === 1 ? 'card' : 'cards'} to generate your first theorem
+                    </p>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={onNavigateChat}
+                className="bg-[#FEB05D] text-white font-['Istok_Web:Regular',sans-serif] px-8 py-3 rounded-lg hover:bg-[#fd9d3d] transition-colors shadow-md"
+              >
+                Get More Joy
+              </button>
+            </div>
+          ) : (
+            <div className="text-center space-y-6">
+              <div className="space-y-2">
+                <p className="text-2xl font-['Itim:Regular',sans-serif] text-[#2b2a2a]">Theorem Generated!</p>
+                <p className="text-gray-600 font-['Istok_Web:Regular',sans-serif]">
+                  You have {insights.length} joy theorem{insights.length > 1 ? 's' : ''} ready to explore.
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  if (insights.length > 0 && onEditInsight) {
+                    onEditInsight(insights[0]);
+                  } else if (onNavigateTheoremEdit) {
+                    onNavigateTheoremEdit();
+                  }
+                }}
+                className="bg-[#A9D66A] text-white font-['Istok_Web:Regular',sans-serif] px-8 py-3 rounded-lg hover:bg-[#95c156] transition-colors shadow-md"
+              >
+                Check it out
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      
       <Component onNavigateChat={onNavigateChat} onNavigateHome={onNavigateHome} onNavigateRepository={onNavigateRepository} />
       <Frame6 />
     </div>

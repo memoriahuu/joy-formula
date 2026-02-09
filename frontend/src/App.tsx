@@ -79,6 +79,7 @@ export default function App() {
               onNavigateChat={() => setCurrentPage('chat')}
               onNavigateTheorem={() => setCurrentPage('theorem')}
               onNavigateHome={() => setCurrentPage('home')}
+              onNavigateGiftBox={() => setCurrentPage('energySelection')}
             />
           </motion.div>
         )}

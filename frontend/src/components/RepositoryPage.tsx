@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
+import { MessageCircle, FileText, Smile, BarChart3, BatteryCharging as BatteryChargingIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-yf3nbfz6ej";
 import joyRepoTitle from "../assets/joyrepo.png";
 import char5 from "../assets/formula characters/char5.svg";
@@ -44,7 +44,7 @@ function Frame1({ onNavigateTheorem, onNavigateCard, onNavigateHome }: { onNavig
         <BarChart3 className="w-6 h-6 text-[#FEB05D]" strokeWidth={1.5} />
       </button>
       <div className="relative shrink-0">
-        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <BatteryChargingIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
+import { MessageCircle, FileText, Smile, BarChart3, BatteryCharging as BatteryChargingIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-q9e9i9q3px";
 import imgImage5 from "figma:asset/5e23b583e6ceb3250bf5714b464a5fc90e5eba62.png";
 import { chatApi } from '../api';
@@ -93,7 +93,7 @@ function Frame1({ onNavigateHome, onNavigateTheorem, onNavigateRepository }: { o
         <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <div className="relative shrink-0">
-        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <BatteryChargingIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon } from 'lucide-react';
+import { MessageCircle, FileText, Smile, BarChart3, BatteryCharging as BatteryChargingIcon } from 'lucide-react';
 import svgPaths from "../imports/svg-yq6vd11jyo";
 import { insightsApi } from '../api';
 import type { JoyInsight } from '../types';
@@ -227,7 +227,7 @@ function Frame3({ onNavigateChat, onNavigateHome, onNavigateRepository }: { onNa
         <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <div className="relative shrink-0">
-        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <BatteryChargingIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </div>
     </div>
   );

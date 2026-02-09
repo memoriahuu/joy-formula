@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageCircle, FileText, Smile, BarChart3, Settings as SettingsIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MessageCircle, FileText, Smile, BarChart3, BatteryCharging as BatteryChargingIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import svgPaths from "../imports/svg-svkz6eqmyl";
 import joyRepoTitle from "../assets/joyrepo.png";
 import { insightsApi, cardsApi } from '../api';
@@ -404,7 +404,7 @@ function Frame7({ onNavigateChat, onNavigateHome, onNavigateRepository }: { onNa
         <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
       <div className="relative shrink-0">
-        <SettingsIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+        <BatteryChargingIcon className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { MessageCircle, FileText, Smile, BarChart3, Settings, X } from 'lucide-react';
-import HeatmapVector from '../imports/Vector';
+import { MessageCircle, FileText, Smile, BarChart3, BatteryCharging, X } from 'lucide-react';
 import JoyrepoTitle from '../imports/Joyrepo';
 import { cardsApi } from '../api';
 import { InlineJoyCard } from './InlineJoyCard';
@@ -264,13 +263,110 @@ function FormulaCard({ date, summary, scene, people, event, trigger, sensation, 
   );
 }
 
-// Heatmap component
-function Heatmap() {
+// Real contribution heatmap driven by card dates
+function Heatmap({ cards }: { cards: JoyCard[] }) {
+  const { weeks, monthLabels, totalCount, activeDateKeys } = useMemo(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    // Show first or second half of the year (6 months)
+    const inFirstHalf = now.getMonth() < 6;
+    const halfStart = inFirstHalf ? new Date(year, 0, 3) : new Date(year, 6, 1);
+    const endDate = inFirstHalf ? new Date(year, 5, 30) : new Date(year, 11, 31);
+
+    // Collect dates that have cards
+    const dateKeys = new Set<string>();
+    for (const card of cards) {
+      const d = new Date(card.created_at);
+      if (d.getFullYear() === year) {
+        dateKeys.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+      }
+    }
+
+    // Start from the Monday of the week containing the half start
+    const startDay = halfStart.getDay(); // 0=Sun
+    const mondayOffset = startDay === 0 ? -6 : 1 - startDay;
+    const startDate = new Date(halfStart.getFullYear(), halfStart.getMonth(), halfStart.getDate() + mondayOffset);
+
+    const weeksArr: (Date | null)[][] = [];
+    const labels: { text: string; col: number }[] = [];
+    let lastMonth = -1;
+    const current = new Date(startDate);
+
+    while (current <= endDate || current.getDay() !== 1) {
+      const week: (Date | null)[] = [];
+      for (let dow = 0; dow < 7; dow++) {
+        const d = new Date(current);
+        if (d.getFullYear() === year && d >= halfStart && d <= endDate) {
+          week.push(d);
+          if (d.getMonth() !== lastMonth && dow === 0) {
+            lastMonth = d.getMonth();
+            labels.push({
+              text: d.toLocaleDateString('en-US', { month: 'short' }),
+              col: weeksArr.length,
+            });
+          }
+        } else {
+          week.push(null);
+        }
+        current.setDate(current.getDate() + 1);
+      }
+      weeksArr.push(week);
+      if (current > endDate && current.getDay() === 1) break;
+    }
+
+    return { weeks: weeksArr, monthLabels: labels, totalCount: dateKeys.size, activeDateKeys: dateKeys };
+  }, [cards]);
+
+  // Fixed small cell size for full-year view
+  const cellSize = 10;
+  const gap = 2;
+  const headerHeight = 24;
+
+  const isActive = (d: Date | null) => {
+    if (!d) return false;
+    return activeDateKeys.has(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+  };
+
+  const colWidth = cellSize + gap;
+
   return (
-    <div className="w-[325px] mx-auto mb-4">
-      <div className="relative w-full h-[115px]">
-        <HeatmapVector />
+    <div className="mx-4 mb-1">
+      {/* Month labels */}
+      <div className="relative" style={{ height: headerHeight, marginBottom: 1 }}>
+        {monthLabels.map((m, i) => (
+          <span
+            key={i}
+            className="text-[7px] text-[#aaa] absolute leading-none"
+            style={{ left: m.col * colWidth }}
+          >
+            {m.text}
+          </span>
+        ))}
       </div>
+
+      {/* Grid */}
+      <div className="flex" style={{ gap }}>
+        {weeks.map((week, wi) => (
+          <div key={wi} className="flex flex-col" style={{ gap }}>
+            {week.map((day, di) => (
+              <div
+                key={di}
+                style={{
+                  width: cellSize,
+                  height: cellSize,
+                  borderRadius: 1.5,
+                  backgroundColor: day === null ? 'transparent' : isActive(day) ? '#A9D66A' : '#D9D9D9',
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Count label */}
+      <p className="text-right text-[9px] text-[#999] mt-1">
+        {totalCount} Happiness in {new Date().getFullYear()}
+      </p>
     </div>
   );
 }
@@ -280,9 +376,10 @@ interface BottomNavProps {
   onNavigateChat: () => void;
   onNavigateTheorem: () => void;
   onNavigateHome: () => void;
+  onNavigateGiftBox: () => void;
 }
 
-function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: BottomNavProps) {
+function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome, onNavigateGiftBox }: BottomNavProps) {
   return (
     <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-[84px] flex items-center justify-around px-8 z-50">
       <button onClick={onNavigateChat} className="p-2 transition-transform hover:scale-110 active:scale-95">
@@ -297,8 +394,8 @@ function BottomNav({ onNavigateChat, onNavigateTheorem, onNavigateHome }: Bottom
       <button className="p-2 transition-transform hover:scale-110 active:scale-95">
         <BarChart3 className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
-      <button className="p-2 transition-transform hover:scale-110 active:scale-95">
-        <Settings className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
+      <button onClick={onNavigateGiftBox} className="p-2 transition-transform hover:scale-110 active:scale-95">
+        <BatteryCharging className="w-6 h-6 text-gray-600" strokeWidth={1.5} />
       </button>
 
       {/* Home Indicator */}
@@ -312,9 +409,10 @@ interface NewRepositoryPageProps {
   onNavigateChat: () => void;
   onNavigateTheorem: () => void;
   onNavigateHome: () => void;
+  onNavigateGiftBox: () => void;
 }
 
-export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, onNavigateHome }: NewRepositoryPageProps) {
+export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, onNavigateHome, onNavigateGiftBox }: NewRepositoryPageProps) {
   const [cards, setCards] = useState<JoyCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCard, setSelectedCard] = useState<JoyCard | null>(null);
@@ -358,7 +456,7 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
             </div>
 
             {/* Heatmap below tabs */}
-            <Heatmap />
+            <Heatmap cards={cards} />
           </div>
 
           {/* Content Area - Scrollable with header */}
@@ -390,10 +488,11 @@ export default function NewRepositoryPage({ onNavigateChat, onNavigateTheorem, o
         </div>
 
         {/* Bottom Navigation */}
-        <BottomNav 
-          onNavigateChat={onNavigateChat} 
-          onNavigateTheorem={onNavigateTheorem} 
-          onNavigateHome={onNavigateHome} 
+        <BottomNav
+          onNavigateChat={onNavigateChat}
+          onNavigateTheorem={onNavigateTheorem}
+          onNavigateHome={onNavigateHome}
+          onNavigateGiftBox={onNavigateGiftBox}
         />
       </div>
 

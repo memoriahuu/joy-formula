@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models.user import User
-from ..models.joy_card import JoyCard
-from ..models.joy_insight import JoyInsight
-from ..schemas.exploration import ExplorationRequest, ExplorationResponse
-from ..services.exploration_service import ExplorationService
-from ..api.auth import get_current_user
+from app.database import get_db
+from app.models.user import User
+from app.models.joy_card import JoyCard
+from app.models.joy_insight import JoyInsight
+from app.schemas.exploration import ExplorationRequest, ExplorationResponse
+from app.services.exploration_service import ExplorationService
+from app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api/exploration", tags=["快乐盲盒"])
 

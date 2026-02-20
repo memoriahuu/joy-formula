@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models.user import User
-from ..models.chat_session import ChatSession, SessionStatus, SessionType
-from ..models.joy_card import JoyCard
-from ..schemas.chat import (
+from app.database import get_db
+from app.models.user import User
+from app.models.chat_session import ChatSession, SessionStatus, SessionType
+from app.models.joy_card import JoyCard
+from app.schemas.chat import (
     ChatStartResponse, ChatMessageRequest, ChatMessageResponse,
     ChatCompleteRequest, ChatCompleteResponse
 )

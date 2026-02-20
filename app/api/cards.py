@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models.user import User
-from ..models.joy_card import JoyCard
-from ..schemas.joy_card import JoyCardResponse, JoyCardListResponse
-from ..api.auth import get_current_user
+from app.database import get_db
+from app.models.user import User
+from app.models.joy_card import JoyCard
+from app.schemas.joy_card import JoyCardResponse, JoyCardListResponse
+from app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api/cards", tags=["快乐卡片"])
 

@@ -1,18 +1,15 @@
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-sqlalchemy==2.0.23
-pydantic==2.5.0
-pydantic-settings==2.1.0
+fastapi==0.100.0
+uvicorn[standard]==0.23.2
+sqlalchemy==2.0.19
+pydantic==2.3.0
+pydantic-settings==2.0.3
 python-dotenv==1.0.0
-anyio==3.7.1  
+anyio==3.7.1
 
-# AI SDKs
-anthropic==0.18.0
-openai==1.6.1
+anthropic==0.7.7
+openai==1.3.0
 google-generativeai==0.3.0
 
-# File upload
 python-multipart==0.0.6
 
-# CLI工具
-rich==13.7.0
+rich==13.5.2

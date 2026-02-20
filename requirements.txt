@@ -1,18 +1,18 @@
-fastapi==0.115.0
-uvicorn[standard]==0.32.0
-sqlalchemy==2.0.36
-pydantic==2.10.3
-pydantic-settings==2.6.1
-python-dotenv==1.0.1
-anyio>=4.8.0
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+sqlalchemy==2.0.23
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+anyio==4.2.0
 
-# AI SDKs (根据需要安装)
-anthropic>=0.43.0
-openai>=1.60.0
-google-generativeai>=0.8.3
+# AI SDKs - 使用稳定版本
+anthropic==0.18.0
+openai==1.6.1
+google-generativeai==0.3.0  
 
 # File upload
-python-multipart>=0.0.9
+python-multipart==0.0.6
 
 # CLI工具
-rich==13.9.4
+rich==13.7.0

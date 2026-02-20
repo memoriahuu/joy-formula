@@ -2,11 +2,21 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "destination": "/api/index.py/$1"
     },
     {
       "source": "/(.*)",
       "destination": "/frontend/dist/index.html"
+    }
+  ],
+  "builds": [
+    {
+      "src": "api/**/*.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/dist/**",
+      "use": "@vercel/static"
     }
   ]
 }

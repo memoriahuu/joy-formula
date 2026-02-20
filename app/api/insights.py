@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models.user import User
-from app.models.joy_card import JoyCard
-from app.models.joy_insight import JoyInsight
-from app.schemas.joy_insight import JoyInsightResponse, GenerateInsightsResponse
-from app.services.insight_service import InsightService
-from app.api.auth import get_current_user
+from ..database import get_db
+from ..models.user import User
+from ..models.joy_card import JoyCard
+from ..models.joy_insight import JoyInsight
+from ..schemas.joy_insight import JoyInsightResponse, GenerateInsightsResponse
+from ..services.insight_service import InsightService
+from ..api.auth import get_current_user
 
 router = APIRouter(prefix="/api/insights", tags=["快乐定律"])
 

@@ -6,7 +6,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend/dist/index.html"
+      "destination": "/frontend/build/index.html"
     }
   ],
   "builds": [
@@ -15,8 +15,11 @@
       "use": "@vercel/python"
     },
     {
-      "src": "frontend/dist/**",
-      "use": "@vercel/static"
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build" 
+      }
     }
   ]
 }

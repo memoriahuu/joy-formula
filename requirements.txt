@@ -4,12 +4,12 @@ sqlalchemy==2.0.23
 pydantic==2.5.0
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
-anyio==4.2.0
+anyio==3.7.1  
 
-# AI SDKs - 使用稳定版本
+# AI SDKs
 anthropic==0.18.0
 openai==1.6.1
-google-generativeai==0.3.0  
+google-generativeai==0.3.0
 
 # File upload
 python-multipart==0.0.6
